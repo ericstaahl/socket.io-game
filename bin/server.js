@@ -7,7 +7,7 @@
 // require('dotenv').config();
 
 const app = require('../app');
-// const debug = require('debug')('chat:server');
+const debug = require('debug')('game:server');
 const http = require('http');
 const socketio = require('socket.io');
 // const { instrument } = require("@socket.io/admin-ui");
@@ -100,6 +100,6 @@ function onListening() {
 	const bind = typeof addr === 'string'
 		? 'pipe ' + addr
 		: 'port ' + addr.port;
-	// debug('Listening on ' + bind);
+	debug('Listening on ' + bind);
 	'Listening on ' + bind;
 }
