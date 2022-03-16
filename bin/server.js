@@ -1,16 +1,16 @@
-#!/usr/bin/env node
+// #!/usr/bin/env node
 
 /**
  * Module dependencies.
  */
 
-require('dotenv').config();
+// require('dotenv').config();
 
 const app = require('../app');
-const debug = require('debug')('chat:server');
+// const debug = require('debug')('chat:server');
 const http = require('http');
 const socketio = require('socket.io');
-const { instrument } = require("@socket.io/admin-ui");
+// const { instrument } = require("@socket.io/admin-ui");
 const socket_controller = require('../controllers/socket_controller');
 
 /**
@@ -25,16 +25,11 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
-const io = new socketio.Server(server, {
-	cors: {
-		origin: ["https://admin.socket.io"],
-		credentials: true,
-	}
-});
+const io = new socketio.Server(server);
 
-instrument(io, {
-	auth: false,
-});
+// instrument(io, {
+// 	auth: false,
+// });
 
 io.on('connection', (socket) => {
 	socket_controller(socket, io);
@@ -105,5 +100,6 @@ function onListening() {
 	const bind = typeof addr === 'string'
 		? 'pipe ' + addr
 		: 'port ' + addr.port;
-	debug('Listening on ' + bind);
+	// debug('Listening on ' + bind);
+	'Listening on ' + bind;
 }

@@ -7,7 +7,8 @@
     "socketio-game": "bin/server.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./bin/server.js",
+    "dev": "cross-env DEBUG=chat:* nodemon ./bin/server.js"
   },
   "repository": {
     "type": "git",
