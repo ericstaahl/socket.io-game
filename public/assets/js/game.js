@@ -57,12 +57,7 @@ socket.on('user:disconnected', (username) => {
 socket.on('users', users => {
     console.log(users);
     const usersArray = Object.values(users);
-    usersArray.forEach(user => {
-        console.log(user)
-        const liEl = document.createElement('li');
-        liEl.innerText = user;
-        onlineUsersEl.appendChild(liEl);
-    });
+    onlineUsersEl.innerHTML = usersArray.map(username => `<li>${username}</li>`).join("");
 });
 
 socket.emit('message', 'Hi from the client');
