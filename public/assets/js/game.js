@@ -1,6 +1,7 @@
 const socket = io();
 const startForm = document.querySelector('#start-form');
-// const usernameFormBtn = document.querySelector('#usernameFormBtn')
+const startEl = document.querySelector('#start');
+const gameEl = document.querySelector('#game');
 
 let username = null;
 
@@ -11,6 +12,10 @@ startForm.addEventListener('submit', e => {
         console.log('Server has responded', status)
         if (status.success === false) {
             console.log("Username already taken. Please try with a different one.")
+        }
+        if (status.success === true) {
+            startEl.classList.add('hide');
+            gameEl.classList.remove('hide');
         }
     });
 });
