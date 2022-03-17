@@ -1,3 +1,5 @@
+const { handle } = require('express/lib/application');
+
 /**
  * Socket Controller
  */
@@ -12,7 +14,17 @@ const handleUserJoined = async function(username) {
     debug(users);
 };
 
+const handleDisconnect = async function() {
+    //add the user to the users object
+    debug('Listening for "user-disconnected"')
+    console.log(`${users[this.id]} has disconnected`);
+    delete users[this.id];
+    debug(users);
+};
+
 module.exports = function (socket) {
+    socket.on('disconnect', handleDisconnect);
+
     socket.on('user:joined', handleUserJoined);
 
     socket.on('message', (msg) => {
