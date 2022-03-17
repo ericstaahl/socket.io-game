@@ -30,7 +30,7 @@
 }
 
 #start {
-   /* display: none !important; /*check game page*/
+   /* display: none !important; /*check game page view */
     align-items: center;
 }
 
@@ -39,20 +39,24 @@
     text-align: center;
 }
 
+#start-form,
+div {
+    margin-top: 10px;
+}
+
 
 /* game page */
-
 
 #gameArea {
     background-color: #164659;
     height: 90vh;
     
 }
-/*
+
 .hide {
     display: none !important;
 }
-*/
+
  
 #scoreboard {
     width: 20vw;
