@@ -30,7 +30,7 @@
 }
 
 #start {
-   /* display: none !important; /*check game page*/
+   /* display: none !important; /*check game page view */
     align-items: center;
 }
 
@@ -45,12 +45,12 @@ div {
 }
 
 
-/* game page */
 
+/* game page */
 
 #gameArea {
     background-color: #164659;
-    height: 90vh;
+    height: 80vh;
 
     display: grid;
     grid-template-columns: repeat(10, 1fr);
@@ -63,6 +63,7 @@ div {
 .hide {
     display: none !important;
 }
+
  
 #scoreboard {
     width: 20vw;
@@ -74,3 +75,8 @@ div {
     height: 50px;
 }
 
+#virus {
+    width: 50px;
+    height: 50px;
+    position: relative;
+}

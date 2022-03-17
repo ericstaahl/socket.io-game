@@ -52,11 +52,16 @@ function createGrids(grid) {
     }
 };
 
+
 // Temporary event listener for joining room 1/game-room 1
 findGameBtn1.addEventListener('click', e => {
     e.preventDefault();
     socket.emit('joinGame', findGameBtn1.id, username)
 });
+
+// get virus-image in gridArea
+const imageEl= document.querySelector('#virus').src= '/assets/icons/virus.png';
+
 
 socket.on('user:disconnected', (username) => {
     console.log(`${username} has disconnected.`)
@@ -72,8 +77,10 @@ socket.on('users', users => {
 });
 
 
+
 // socket.on('gameFound', opponentSocket => {
 //     console.log(`A game has been found with this user as the opponent: ${opponentSocket}`);
 // })
 
 socket.emit('message', 'Hi from the client');
+
