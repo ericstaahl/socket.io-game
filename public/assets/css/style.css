@@ -1,4 +1,5 @@
-/* start page */
+/* genelal */
+
 #app,
 #start,
 #game {
@@ -7,15 +8,29 @@
 }
 
 #app {
-    background-color: darkslategray;
+    background-color: #206A73;
 }
 
-.hide {
-    display: none !important;
+.flex {
+    display: flex;
+}
+
+.columns {
+    flex-direction: column;
+}
+
+.rows {
+    flex-direction: row;
+}
+
+/* start page */
+
+.title {
+    text-align: center;
 }
 
 #start {
-    display: flex;
+   /* display: none !important; /*check game page*/
     align-items: center;
 }
 
@@ -24,18 +39,24 @@
     text-align: center;
 }
 
-#game {
-    display: flex;
-}
-
-.title {
-    text-align: center;
-}
 
 /* game page */
 
-.container {    
-    display: flex;
+
+#gameArea {
+    background-color: #164659;
+    height: 90vh;
+    
+}
+/*
+.hide {
+    display: none !important;
+}
+*/
+ 
+#scoreboard {
+    width: 20vw;
+    background-color: #327361;
 }
 
 .block {
