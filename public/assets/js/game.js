@@ -5,9 +5,8 @@ const gameEl = document.querySelector('#game');
 const gridArea = document.querySelector('#gameArea');
 const onlineUsersEl = document.querySelector('#online-users');
 
-
-
 let username = null;
+let savedUsers;
 
 startForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -56,6 +55,8 @@ socket.on('user:disconnected', (username) => {
 
 socket.on('users', users => {
     console.log(users);
+    savedUsers = users;
+    console.log("The saved users: " + savedUsers);
     const usersArray = Object.values(users);
     onlineUsersEl.innerHTML = usersArray.map(username => `<li>${username}</li>`).join("");
 });
