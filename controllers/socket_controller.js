@@ -43,8 +43,12 @@ const handleDisconnect = async function () {
 };
 
 // Send a message to another socket.id
-const privateConnection = async function (opponentsSocket) {
-    socket.to(opponentsSocket).emit("challenge", socket.id, "I challenge you!");
+const privateConnection = async function (secondUser) {
+    debug("Listening for 'findGame")
+    // Find the SocketID corresponding to the username ('secondUser')
+    const secondUserSocket = Object.keys(users).find(key => users[key] === secondUser);
+    debug("secondUsers socket ID: " + secondUserSocket)
+    this.to(secondUserSocket).emit("gameFound", this.id);
 };
 
 module.exports = function (socket, _io) {

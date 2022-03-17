@@ -4,9 +4,9 @@ const startEl = document.querySelector('#start');
 const gameEl = document.querySelector('#game');
 const gridArea = document.querySelector('#gameArea');
 const onlineUsersEl = document.querySelector('#online-users');
+const findGameBtn = document.querySelector('#find-game')
 
 let username = null;
-let savedUsers;
 
 startForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -25,9 +25,9 @@ startForm.addEventListener('submit', e => {
 });
 
 gridArea.addEventListener('click', e => {
-    rounds ++;
+    rounds++;
 
-    if(e.target.tagName === 'I'){
+    if (e.target.tagName === 'I') {
         e.target.parentNode.innerHTML = "";
     }
 });
@@ -47,7 +47,12 @@ function createGrids(grid) {
     }
 };
 
-
+findGameBtn.addEventListener('click', e => {
+    e.preventDefault();
+    if (e.target.tagName === "BUTTON") {
+        socket.emit('findGame', 'user2')
+    }
+})
 
 socket.on('user:disconnected', (username) => {
     console.log(`${username} has disconnected.`)
@@ -55,10 +60,14 @@ socket.on('user:disconnected', (username) => {
 
 socket.on('users', users => {
     console.log(users);
-    savedUsers = users;
-    console.log("The saved users: " + savedUsers);
+    // Create an array of all the values in the user object
     const usersArray = Object.values(users);
     onlineUsersEl.innerHTML = usersArray.map(username => `<li>${username}</li>`).join("");
 });
+
+
+socket.on('gameFound', opponentSocket => {
+    console.log(`A game has been found with this user as the opponent: ${opponentSocket}`);
+})
 
 socket.emit('message', 'Hi from the client');
