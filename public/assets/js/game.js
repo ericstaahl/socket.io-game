@@ -3,6 +3,8 @@ const startForm = document.querySelector('#start-form');
 const startEl = document.querySelector('#start');
 const gameEl = document.querySelector('#game');
 const gridArea = document.querySelector('#gameArea');
+const onlineUsersEl = document.querySelector('#online-users');
+
 
 
 let username = null;
@@ -18,7 +20,7 @@ startForm.addEventListener('submit', e => {
         if (status.success === true) {
             startEl.classList.add('hide');
             gameEl.classList.remove('hide');
-            createGrids(gridArea);
+            // createGrids(gridArea);
         }
     });
 });
@@ -44,11 +46,23 @@ function createGrids(grid) {
         // Fäst divarna i spelområdet
         grid.appendChild(block);
     }
-}
+};
+
 
 
 socket.on('user:disconnected', (username) => {
     console.log(`${username} has disconnected.`)
+});
+
+socket.on('users', users => {
+    console.log(users);
+    const usersArray = Object.values(users);
+    usersArray.forEach(user => {
+        console.log(user)
+        const liEl = document.createElement('li');
+        liEl.innerText = user;
+        onlineUsersEl.appendChild(liEl);
+    });
 });
 
 socket.emit('message', 'Hi from the client');

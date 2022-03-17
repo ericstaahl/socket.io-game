@@ -7,6 +7,8 @@ const debug = require('debug')('game:socket_controller');
 // Object containing all users
 const users = {};
 
+let io = null; // socket.io server instance
+
 const handleUserJoined = async function (username, callback) {
     //add the user to the users object
     debug('Listening for "user-join"')
@@ -24,6 +26,7 @@ const handleUserJoined = async function (username, callback) {
         callback({
             success: true,
         })
+        io.emit("users", users);
     } else {
         callback({
             success: false,
@@ -44,7 +47,9 @@ const privateConnection = async function (opponentsSocket) {
     socket.to(opponentsSocket).emit("challenge", socket.id, "I challenge you!");
 };
 
-module.exports = function (socket) {
+module.exports = function (socket, _io) {
+    io = _io;
+
     socket.on('disconnect', handleDisconnect);
 
     socket.on('user:joined', handleUserJoined);
