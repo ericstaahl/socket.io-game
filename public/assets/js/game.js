@@ -47,6 +47,8 @@ function createGrids(grid) {
     }
 };
 
+// get virus-image in gridArea
+const imageEl= document.querySelector('#virus').src= '/assets/icons/virus.png';
 
 
 socket.on('user:disconnected', (username) => {
@@ -62,3 +64,4 @@ socket.on('users', users => {
 });
 
 socket.emit('message', 'Hi from the client');
+
