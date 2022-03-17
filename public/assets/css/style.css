@@ -46,6 +46,12 @@
 #gameArea {
     background-color: #164659;
     height: 90vh;
+
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    align-items: center;
+    gap: 2%;
     
 }
 

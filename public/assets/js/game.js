@@ -17,8 +17,8 @@ startForm.addEventListener('submit', e => {
         }
         if (status.success === true) {
             startEl.classList.add('hide');
-            createGrids(gridArea);
             gameEl.classList.remove('hide');
+            createGrids(gridArea);
         }
     });
 });
@@ -28,11 +28,10 @@ gridArea.addEventListener('click', e => {
 
     if(e.target.tagName === 'I'){
         e.target.parentNode.innerHTML = "";
-        virus()
     }
 });
 
-function gridArea(grid) {
+function createGrids(grid) {
 
     //for loop, sksapa en ny div i spelet
     for (let i = 0; i < width * width; i++) {
