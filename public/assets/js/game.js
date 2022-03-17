@@ -59,9 +59,18 @@ findGameBtn1.addEventListener('click', e => {
     socket.emit('joinGame', findGameBtn1.id, username)
 });
 
-// get virus-image in gridArea
-const imageEl= document.querySelector('#virus').src= '/assets/icons/virus.png';
 
+//------------ get random position ---------------------
+function getRandomPosition(element) {
+	let x = document.body.offsetHeight-element.clientHeight; // horizontal
+	let y = document.body.offsetWidth-element.clientWidth; // vertical
+	let randomX = Math.floor(Math.random()*x); // horizontal random
+	let randomY = Math.floor(Math.random()*y); // vertical random
+	return [randomX,randomY];
+}
+
+    const imageEl= document.querySelector('#virus').src= '/assets/icons/virus.png';
+// --------------------------------------------------
 
 socket.on('user:disconnected', (username) => {
     console.log(`${username} has disconnected.`)

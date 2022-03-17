@@ -47,11 +47,13 @@ div {
 
 
 /* game page */
+.hide {
+    display: none !important;
+}
 
 #gameArea {
     background-color: #164659;
     height: 80vh;
-
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
@@ -60,10 +62,11 @@ div {
     
 }
 
-.hide {
-    display: none !important;
+#virus {
+    width: 50px;
+    height: 50px;
+    position: absolute;
 }
-
  
 #scoreboard {
     width: 20vw;
@@ -75,8 +78,4 @@ div {
     height: 50px;
 }
 
-#virus {
-    width: 50px;
-    height: 50px;
-    position: relative;
-}
+
