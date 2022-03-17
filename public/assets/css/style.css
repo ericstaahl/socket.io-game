@@ -39,6 +39,11 @@
     text-align: center;
 }
 
+#start-form,
+div {
+    margin-top: 10px;
+}
+
 
 /* game page */
 
@@ -58,7 +63,6 @@
 .hide {
     display: none !important;
 }
-
  
 #scoreboard {
     width: 20vw;
