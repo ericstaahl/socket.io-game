@@ -1,0 +1,42 @@
+/* start page */
+#app,
+#start,
+#game {
+    height: 100vh;
+    width: 100vw;
+}
+
+#app {
+    background-color: darkslategray;
+}
+
+.hide {
+    display: none !important;
+}
+
+#start {
+    display: flex;
+    align-items: center;
+}
+
+#start-form {
+    margin: 0 auto;
+    text-align: center;
+}
+
+#game {
+    display: flex;
+}
+
+.title {
+    text-align: center;
+}
+
+/* game page */
+
+.container {    
+    display: flex;
+}
+
+
+
