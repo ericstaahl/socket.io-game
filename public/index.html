@@ -6,8 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
+  
     <!-- Bootstrap 5 styles -->
+    
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> 
+    
 
     <!-- Styles -->
 	<link rel="stylesheet" href="/assets/css/style.css">
@@ -18,8 +21,8 @@
     
     <div id="app">
         <!-- Start page -->
-        <section id="start">
-            <div class="container">
+        <section id="start" class="flex">
+            <div class="container flex">
                 <div class="columns centered">
                     <h1 class="title">Virus Game</h1>
 
@@ -39,14 +42,15 @@
         </section>
 
         <!-- Game page -->
-        <section id="game" class="hide">
-            <div class="container background-color">
-                <div class="columns">
-                    <div id="gameArea" class="column three-quarters">
+        <section id="game" class="hide flex">
+            <div class="flex container background-color columns">
+                <h2> Game title </h2> <!-- change title later -->
+                <div id="game_wrapper" class="flex rows">
+                    <div id="gameArea" class="column col-9">
                         <img id="virus" src="" alt="">
                     </div>
 
-                    <div id="scoreboard" class="column">
+                    <div id="scoreboard" class="columns col-3">
                         <div class="card">
                             <h2 class="scoreboard-head">Scoreboard</h2>
                             <div class="card-content">
@@ -63,8 +67,8 @@
                         </footer>
                     </div>
                 </div>
-            </div>
-        </section>
+            </div> <!-- game_wrapper -->
+        </section> <!-- game -->
     </div>
 
     <!-- socket.io script -->
