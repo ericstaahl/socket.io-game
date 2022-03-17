@@ -4,8 +4,11 @@ const startEl = document.querySelector('#start');
 const gameEl = document.querySelector('#game');
 const gridArea = document.querySelector('#gameArea');
 const onlineUsersEl = document.querySelector('#online-users');
-const findGameBtn = document.querySelector('#find-game')
+const findGameBtn1 = document.querySelector('#game1')
+const findGameBtn2 = document.querySelector('#game2')
+const findGameBtn3 = document.querySelector('#game3')
 
+let room = null;
 let username = null;
 
 startForm.addEventListener('submit', e => {
@@ -47,12 +50,10 @@ function createGrids(grid) {
     }
 };
 
-findGameBtn.addEventListener('click', e => {
+findGameBtn1.addEventListener('click', e => {
     e.preventDefault();
-    if (e.target.tagName === "BUTTON") {
-        socket.emit('findGame', 'user2')
-    }
-})
+    socket.emit('joinGame', findGameBtn1.id, username)
+});
 
 socket.on('user:disconnected', (username) => {
     console.log(`${username} has disconnected.`)
@@ -66,8 +67,8 @@ socket.on('users', users => {
 });
 
 
-socket.on('gameFound', opponentSocket => {
-    console.log(`A game has been found with this user as the opponent: ${opponentSocket}`);
-})
+// socket.on('gameFound', opponentSocket => {
+//     console.log(`A game has been found with this user as the opponent: ${opponentSocket}`);
+// })
 
 socket.emit('message', 'Hi from the client');
