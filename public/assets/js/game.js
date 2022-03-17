@@ -3,9 +3,10 @@ const startForm = document.querySelector('#start-form');
 const startEl = document.querySelector('#start');
 const gameEl = document.querySelector('#game');
 const gridArea = document.querySelector('#gameArea');
-
+const onlineUsersEl = document.querySelector('#online-users');
 
 let username = null;
+let savedUsers;
 
 startForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -17,17 +18,21 @@ startForm.addEventListener('submit', e => {
         }
         if (status.success === true) {
             startEl.classList.add('hide');
-            createGrids(gridArea);
             gameEl.classList.remove('hide');
+            // createGrids(gridArea);
         }
     });
 });
 
 gridArea.addEventListener('click', e => {
-  // addventslisteners
+    rounds ++;
+
+    if(e.target.tagName === 'I'){
+        e.target.parentNode.innerHTML = "";
+    }
 });
 
-function gridArea(grid) {
+function createGrids(grid) {
 
     //for loop, sksapa en ny div i spelet
     for (let i = 0; i < width * width; i++) {
@@ -40,11 +45,20 @@ function gridArea(grid) {
         // Fäst divarna i spelområdet
         grid.appendChild(block);
     }
-}
+};
+
 
 
 socket.on('user:disconnected', (username) => {
     console.log(`${username} has disconnected.`)
+});
+
+socket.on('users', users => {
+    console.log(users);
+    savedUsers = users;
+    console.log("The saved users: " + savedUsers);
+    const usersArray = Object.values(users);
+    onlineUsersEl.innerHTML = usersArray.map(username => `<li>${username}</li>`).join("");
 });
 
 socket.emit('message', 'Hi from the client');
