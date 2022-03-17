@@ -24,7 +24,12 @@ startForm.addEventListener('submit', e => {
 });
 
 gridArea.addEventListener('click', e => {
-  // addventslisteners
+    rounds ++;
+
+    if(e.target.tagName === 'I'){
+        e.target.parentNode.innerHTML = "";
+        virus()
+    }
 });
 
 function gridArea(grid) {
