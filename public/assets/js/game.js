@@ -9,6 +9,9 @@ startForm.addEventListener('submit', e => {
     username = startForm.username.value;
     socket.emit('user:joined', username, (status) => {
         console.log('Server has responded', status)
+        if (status.success === false) {
+            console.log("Username already taken. Please try with a different one.")
+        }
     });
 });
 

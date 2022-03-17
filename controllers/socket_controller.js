@@ -7,14 +7,31 @@ const debug = require('debug')('game:socket_controller');
 // Object containing all users
 const users = {};
 
-const handleUserJoined = async function(username) {
+const handleUserJoined = async function (username, callback) {
     //add the user to the users object
     debug('Listening for "user-join"')
-    users[this.id] = username;
+
+    const usersArray = Object.values(users);
+    const found = usersArray.includes(username)
+    debug("This is found: " + found);
+    if (!found) {
+        users[this.id] = username;
+    };
     debug(users);
+
+    // Confirm to client that they have joined
+    if (!found) {
+        callback({
+            success: true,
+        })
+    } else {
+        callback({
+            success: false,
+        })
+    };
 };
 
-const handleDisconnect = async function() {
+const handleDisconnect = async function () {
     //add the user to the users object
     debug('Listening for "user-disconnected"')
     console.log(`${users[this.id]} has disconnected`);
