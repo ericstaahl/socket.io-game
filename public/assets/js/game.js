@@ -4,6 +4,7 @@ const startEl = document.querySelector('#start');
 const gameEl = document.querySelector('#game');
 const gridArea = document.querySelector('#gameArea');
 const onlineUsersEl = document.querySelector('#online-users');
+//temporary query selectors for joining these rooms/gamerooms
 const findGameBtn1 = document.querySelector('#game1')
 const findGameBtn2 = document.querySelector('#game2')
 const findGameBtn3 = document.querySelector('#game3')
@@ -15,6 +16,7 @@ startForm.addEventListener('submit', e => {
     e.preventDefault();
     username = startForm.username.value;
     socket.emit('user:joined', username, (status) => {
+        // Server responds with an object. Includes success which is true if the sent username doesn't already exist
         console.log('Server has responded', status)
         if (status.success === false) {
             console.log("Username already taken. Please try with a different one.")
@@ -50,6 +52,7 @@ function createGrids(grid) {
     }
 };
 
+// Temporary event listener for joining room 1/game-room 1
 findGameBtn1.addEventListener('click', e => {
     e.preventDefault();
     socket.emit('joinGame', findGameBtn1.id, username)
@@ -63,6 +66,8 @@ socket.on('users', users => {
     console.log(users);
     // Create an array of all the values in the user object
     const usersArray = Object.values(users);
+    // Display all users on the page
+    // TODO Make sure names are removed from the array (on server side) when disconnected so that they do not rerender on the page
     onlineUsersEl.innerHTML = usersArray.map(username => `<li>${username}</li>`).join("");
 });
 

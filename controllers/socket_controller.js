@@ -32,7 +32,6 @@ const handleUserJoined = async function (username, callback) {
 
     const usersArray = Object.values(users);
     const found = usersArray.includes(username)
-    debug("This is found: " + found);
     if (!found) {
         users[this.id] = username;
     };
