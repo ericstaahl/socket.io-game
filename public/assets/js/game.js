@@ -66,9 +66,20 @@ gridArea.addEventListener('click', e => {
     if(e.target.tagName === 'IMG'){}
     
 });
+// -------- spawn virus (test) --------- 
 
+// Working with 2D
+gridArea = getContext('2d');
+// grid
+for (let i = 0; i < 5; i++){
+    gridArea.fillRct(i * 55, i * 55, 45, 45);
+}
+
+
+
+// -------------------------------------
  
-
+//------- rooms ----------
 // Temporary event listener for joining room 1/game-room 1
 findGameBtn1.addEventListener('click', e => {
     e.preventDefault();
@@ -93,6 +104,7 @@ findGameBtn3.addEventListener('click', e => {
     gameStartInfoEl.innerText = "Waiting for another player..."
 });
 
+// ----- socket --------
 socket.on('user:disconnected', (username) => {
     console.log(`${username} has disconnected.`)
 });
