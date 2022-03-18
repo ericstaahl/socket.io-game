@@ -29,14 +29,6 @@ startForm.addEventListener('submit', e => {
     });
 });
 
-gridArea.addEventListener('click', e => {
-    rounds++;
-
-    if (e.target.tagName === 'I') {
-        e.target.parentNode.innerHTML = "";
-    }
-});
-
 function createGrids(grid) {
 
     //for loop, sksapa en ny div i spelet
