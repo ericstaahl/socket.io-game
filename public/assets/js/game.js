@@ -8,6 +8,7 @@ const onlineUsersEl = document.querySelector('#online-users');
 const findGameBtn1 = document.querySelector('#game1');
 const findGameBtn2 = document.querySelector('#game2');
 const findGameBtn3 = document.querySelector('#game3');
+const gameStartInfoEl = document.querySelector('#game-start-info');
 
 let room = null;
 let username = null;
@@ -65,7 +66,6 @@ findGameBtn2.addEventListener('click', e => {
 findGameBtn3.addEventListener('click', e => {
     e.preventDefault();
     socket.emit('joinGame', findGameBtn3.id, username);
-    const gameStartInfoEl = document.querySelector('#game-start-info');
     gameStartInfoEl.innerText = "Waiting for another player...";
 });
 
@@ -97,7 +97,5 @@ socket.on('users', users => {
 
 socket.on('gameFound', msg => {
     console.log(msg);
+    gameStartInfoEl.innerText = "A game has been found!";
 });
-
-socket.emit('message', 'Hi from the client');
-
