@@ -67,12 +67,12 @@ const handleDisconnect = async function () {
 //     this.to(secondUserSocket).emit("gameFound", this.id);
 // };
 
-const handleJoinGame = async function (room_id, username) {
+const handleJoinGame = async function (room_id, username, callback) {
     
     // find the game (room) that the client supplied
     const game_room = rooms.find(room => room.id === room_id);
     
-    debug("Number of keys in game_room.users" + Object.keys(game_room.users));
+    debug("Number of keys in game_room.users: " + Object.keys(game_room.users).length);
     if (Object.keys(game_room.users).length < 2) {
         this.join(room_id);
     
@@ -87,7 +87,11 @@ const handleJoinGame = async function (room_id, username) {
         rooms.forEach(room => {
             debug(room);
         });
-    }
+    };
+
+    if (Object.keys(game_room.users).length === 2) {
+        callback({status: "Game is ready to start"})
+    };
 };
 
 module.exports = function (socket, _io) {
