@@ -99,10 +99,5 @@ socket.on('gameFound', msg => {
     console.log(msg);
 });
 
-
-// socket.on('gameFound', opponentSocket => {
-//     console.log(`A game has been found with this user as the opponent: ${opponentSocket}`);
-// })
-
 socket.emit('message', 'Hi from the client');
 

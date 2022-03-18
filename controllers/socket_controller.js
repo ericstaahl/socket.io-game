@@ -26,6 +26,10 @@ const rooms = [
 
 let io = null; // socket.io server instance
 
+const getRoomByUserId = id => {
+    return rooms.find(chatroom => chatroom.users.hasOwnProperty(id))
+}
+
 const handleUserJoined = async function (username, callback) {
     // add the user to the users object
     debug('Listening for "user-join"')
@@ -52,10 +56,22 @@ const handleUserJoined = async function (username, callback) {
 
 const handleDisconnect = async function () {
     //remove the user from the users object
-    debug('Listening for "user-disconnected"')
+    // debug('Listening for "user-disconnected"')
     console.log(`${users[this.id]} has disconnected`);
     delete users[this.id];
-    debug(users);
+    // debug(users);
+
+    //remove the user from the room
+    const room = getRoomByUserId(this.id);
+    // Don't run rest of the code if the user wasn't part of a room
+    if (!room) {
+        return;
+    }
+    delete room.users[this.id];
+    io.emit("users", users);
+    rooms.forEach(room => {
+        debug(room);
+    });
 };
 
 const handleJoinGame = async function (room_id, username) {
