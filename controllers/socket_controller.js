@@ -59,12 +59,13 @@ const handleDisconnect = async function () {
     // debug('Listening for "user-disconnected"')
     console.log(`${users[this.id]} has disconnected`);
     delete users[this.id];
-    // debug(users);
+    debug(users);
 
     //remove the user from the room
     const room = getRoomByUserId(this.id);
     // Don't run rest of the code if the user wasn't part of a room
     if (!room) {
+        io.emit("users", users);
         return;
     }
     delete room.users[this.id];
