@@ -112,9 +112,4 @@ module.exports = function (socket, _io) {
     socket.on('user:joined', handleUserJoined);
 
     socket.on('joinGame', handleJoinGame);
-
-    socket.on('message', (msg) => {
-        debug('Listening for "message"')
-        console.log('Message: ', msg);
-    });
 };
