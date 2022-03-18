@@ -26,6 +26,10 @@ const rooms = [
 
 let io = null; // socket.io server instance
 
+const getRoomByUserId = id => {
+    return rooms.find(chatroom => chatroom.users.hasOwnProperty(id))
+}
+
 const handleUserJoined = async function (username, callback) {
     // add the user to the users object
     debug('Listening for "user-join"')
@@ -52,33 +56,53 @@ const handleUserJoined = async function (username, callback) {
 
 const handleDisconnect = async function () {
     //remove the user from the users object
-    debug('Listening for "user-disconnected"')
+    // debug('Listening for "user-disconnected"')
     console.log(`${users[this.id]} has disconnected`);
     delete users[this.id];
     debug(users);
-};
 
-// // Send a message to another socket.id
-// const privateConnection = async function (secondUser) {
-//     debug("Listening for 'findGame")
-//     // Find the SocketID corresponding to the username ('secondUser')
-//     const secondUserSocket = Object.keys(users).find(key => users[key] === secondUser);
-//     debug("secondUsers socket ID: " + secondUserSocket)
-//     this.to(secondUserSocket).emit("gameFound", this.id);
-// };
-
-const handleJoinGame = async function (room_id, username) {
-    this.join(room_id);
-
-    // find the game (room) that the client supplied
-    const game_room = rooms.find(room => room.id === room_id);
-
-    // add the users socket id to the rooms 'users' object
-    game_room.users[this.id] = username;
-
+    //remove the user from the room
+    const room = getRoomByUserId(this.id);
+    // Don't run rest of the code if the user wasn't part of a room
+    if (!room) {
+        io.emit("users", users);
+        return;
+    }
+    delete room.users[this.id];
+    io.emit("users", users);
     rooms.forEach(room => {
         debug(room);
     });
+};
+
+const handleJoinGame = async function (room_id, username) {
+    
+    // find the game (room) that the client supplied
+    const game_room = rooms.find(room => room.id === room_id);
+    
+    debug("Number of keys in game_room.users: " + Object.keys(game_room.users).length);
+    if (Object.keys(game_room.users).length < 2) {
+        this.join(room_id);
+    
+        // add the users socket id to the rooms 'users' object
+        game_room.users[this.id] = username;
+    
+        rooms.forEach(room => {
+            debug(room);
+        });
+    } else {
+        debug("This room/game already has two players.")
+        rooms.forEach(room => {
+            debug(room);
+        });
+    };
+
+    if (Object.keys(game_room.users).length === 2) {
+        const msg = "A game has been found."
+        // Client responds to this emit, some function runs and the game starts?
+        io.in(game_room.id).emit('gameFound', msg);
+        // callback({status: "Game is ready to start"})
+    };
 };
 
 module.exports = function (socket, _io) {
@@ -88,12 +112,5 @@ module.exports = function (socket, _io) {
 
     socket.on('user:joined', handleUserJoined);
 
-    // socket.on('findGame', privateConnection);
-
     socket.on('joinGame', handleJoinGame);
-
-    socket.on('message', (msg) => {
-        debug('Listening for "message"')
-        console.log('Message: ', msg);
-    });
 };

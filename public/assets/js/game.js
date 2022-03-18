@@ -8,6 +8,7 @@ const onlineUsersEl = document.querySelector('#online-users');
 const findGameBtn1 = document.querySelector('#game1');
 const findGameBtn2 = document.querySelector('#game2');
 const findGameBtn3 = document.querySelector('#game3');
+const gameStartInfoEl = document.querySelector('#game-start-info');
 
 let room = null;
 let username = null;
@@ -83,25 +84,24 @@ for (let i = 0; i < 5; i++){
 // Temporary event listener for joining room 1/game-room 1
 findGameBtn1.addEventListener('click', e => {
     e.preventDefault();
-    socket.emit('joinGame', findGameBtn1.id, username)
-    const gameStartInfoEl = document.querySelector('#game-start-info')
-    gameStartInfoEl.innerText = "Waiting for another player..."
+    socket.emit('joinGame', findGameBtn1.id, username);
+    const gameStartInfoEl = document.querySelector('#game-start-info');
+    gameStartInfoEl.innerText = "Waiting for another player...";
 });
 
 // Temporary event listener for joining room 2/game-room 2
 findGameBtn2.addEventListener('click', e => {
     e.preventDefault();
     socket.emit('joinGame', findGameBtn2.id, username)
-    const gameStartInfoEl = document.querySelector('#game-start-info')
-    gameStartInfoEl.innerText = "Waiting for another player..."
+    const gameStartInfoEl = document.querySelector('#game-start-info');
+    gameStartInfoEl.innerText = "Waiting for another player...";
 });
 
 // Temporary event listener for joining room 3/game-room 3
 findGameBtn3.addEventListener('click', e => {
     e.preventDefault();
-    socket.emit('joinGame', findGameBtn3.id, username)
-    const gameStartInfoEl = document.querySelector('#game-start-info')
-    gameStartInfoEl.innerText = "Waiting for another player..."
+    socket.emit('joinGame', findGameBtn3.id, username);
+    gameStartInfoEl.innerText = "Waiting for another player...";
 });
 
 // ----- socket --------
@@ -118,11 +118,7 @@ socket.on('users', users => {
     onlineUsersEl.innerHTML = usersArray.map(username => `<li>${username}</li>`).join("");
 });
 
-
-
-// socket.on('gameFound', opponentSocket => {
-//     console.log(`A game has been found with this user as the opponent: ${opponentSocket}`);
-// })
-
-socket.emit('message', 'Hi from the client');
-
+socket.on('gameFound', msg => {
+    console.log(msg);
+    gameStartInfoEl.innerText = "A game has been found!";
+});
