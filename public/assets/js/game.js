@@ -29,11 +29,29 @@ startForm.addEventListener('submit', e => {
     });
 });
 
-function createGrids(grid) {
+const imageEl= document.querySelector('#virus').src= '/assets/icons/virus.png'; // <---
+function createGrids(grid) {  
+    /*
+    const block = document.createElement('div'); // <---
+    div.appendChild(imageEl); // <---
+    //testa random 
+    let w = window.innerWidth = '100px'; // <---
+    let h = window.innerHeight = '100px'; // <---
 
+    let W = Math.floor(Math.random() * w); // <---
+    let H = Math.floor(Math.random() * h); // <---
+
+    block.style.top = H + 'px'; // <---
+    block.style.left = W + 'px'; // <---
+
+    grid.appendChild(block);
+    */
+    
     //for loop, sksapa en ny div i spelet
     for (let i = 0; i < width * width; i++) {
-        const block = document.createElement('div');
+        const block = document.gridArea.createElement('div');
+        div.appendChild(imageEl); // <---
+
         block.classList.add('block');
 
         // Ge varje ny div ett id
@@ -41,9 +59,15 @@ function createGrids(grid) {
 
         // Fäst divarna i spelområdet
         grid.appendChild(block);
-    }
+    }   
 };
 
+gridArea.addEventListener('click', e => {
+    if(e.target.tagName === 'IMG'){}
+    
+});
+
+ 
 
 // Temporary event listener for joining room 1/game-room 1
 findGameBtn1.addEventListener('click', e => {
@@ -68,19 +92,6 @@ findGameBtn3.addEventListener('click', e => {
     const gameStartInfoEl = document.querySelector('#game-start-info')
     gameStartInfoEl.innerText = "Waiting for another player..."
 });
-
-
-//------------ get random position ---------------------
-function getRandomPosition(element) {
-	let x = document.body.offsetHeight-element.clientHeight; // horizontal
-	let y = document.body.offsetWidth-element.clientWidth; // vertical
-	let randomX = Math.floor(Math.random()*x); // horizontal random
-	let randomY = Math.floor(Math.random()*y); // vertical random
-	return [randomX,randomY];
-}
-
-    const imageEl= document.querySelector('#virus').src= '/assets/icons/virus.png';
-// --------------------------------------------------
 
 socket.on('user:disconnected', (username) => {
     console.log(`${username} has disconnected.`)
