@@ -5,9 +5,9 @@ const gameEl = document.querySelector('#game');
 const gridArea = document.querySelector('#gameArea');
 const onlineUsersEl = document.querySelector('#online-users');
 //temporary query selectors for joining these rooms/gamerooms
-const findGameBtn1 = document.querySelector('#game1')
-const findGameBtn2 = document.querySelector('#game2')
-const findGameBtn3 = document.querySelector('#game3')
+const findGameBtn1 = document.querySelector('#game1');
+const findGameBtn2 = document.querySelector('#game2');
+const findGameBtn3 = document.querySelector('#game3');
 
 let room = null;
 let username = null;
@@ -57,16 +57,24 @@ function createGrids(grid) {
 findGameBtn1.addEventListener('click', e => {
     e.preventDefault();
     socket.emit('joinGame', findGameBtn1.id, username)
+    const gameStartInfoEl = document.querySelector('#game-start-info')
+    gameStartInfoEl.innerText = "Waiting for another player..."
 });
+
 // Temporary event listener for joining room 2/game-room 2
 findGameBtn2.addEventListener('click', e => {
     e.preventDefault();
     socket.emit('joinGame', findGameBtn2.id, username)
+    const gameStartInfoEl = document.querySelector('#game-start-info')
+    gameStartInfoEl.innerText = "Waiting for another player..."
 });
+
 // Temporary event listener for joining room 3/game-room 3
 findGameBtn3.addEventListener('click', e => {
     e.preventDefault();
     socket.emit('joinGame', findGameBtn3.id, username)
+    const gameStartInfoEl = document.querySelector('#game-start-info')
+    gameStartInfoEl.innerText = "Waiting for another player..."
 });
 
 
