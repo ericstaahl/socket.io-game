@@ -58,6 +58,16 @@ findGameBtn1.addEventListener('click', e => {
     e.preventDefault();
     socket.emit('joinGame', findGameBtn1.id, username)
 });
+// Temporary event listener for joining room 2/game-room 2
+findGameBtn2.addEventListener('click', e => {
+    e.preventDefault();
+    socket.emit('joinGame', findGameBtn2.id, username)
+});
+// Temporary event listener for joining room 3/game-room 3
+findGameBtn3.addEventListener('click', e => {
+    e.preventDefault();
+    socket.emit('joinGame', findGameBtn3.id, username)
+});
 
 
 //------------ get random position ---------------------
