@@ -68,17 +68,26 @@ const handleDisconnect = async function () {
 // };
 
 const handleJoinGame = async function (room_id, username) {
-    this.join(room_id);
-
+    
     // find the game (room) that the client supplied
     const game_room = rooms.find(room => room.id === room_id);
-
-    // add the users socket id to the rooms 'users' object
-    game_room.users[this.id] = username;
-
-    rooms.forEach(room => {
-        debug(room);
-    });
+    
+    debug("Number of keys in game_room.users" + Object.keys(game_room.users));
+    if (Object.keys(game_room.users).length < 2) {
+        this.join(room_id);
+    
+        // add the users socket id to the rooms 'users' object
+        game_room.users[this.id] = username;
+    
+        rooms.forEach(room => {
+            debug(room);
+        });
+    } else {
+        debug("This room/game already has two players.")
+        rooms.forEach(room => {
+            debug(room);
+        });
+    }
 };
 
 module.exports = function (socket, _io) {
