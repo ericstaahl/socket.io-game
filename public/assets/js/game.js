@@ -48,13 +48,9 @@ function createGrids(grid) {
 // Temporary event listener for joining room 1/game-room 1
 findGameBtn1.addEventListener('click', e => {
     e.preventDefault();
-    socket.emit('joinGame', findGameBtn1.id, username, (status) => {
-        const gameStartInfoEl = document.querySelector('#game-start-info');
-        gameStartInfoEl.innerText = "Waiting for another player...";
-        if (status) {
-            console.log(status);
-        };
-    });
+    socket.emit('joinGame', findGameBtn1.id, username);
+    const gameStartInfoEl = document.querySelector('#game-start-info');
+    gameStartInfoEl.innerText = "Waiting for another player...";
 });
 
 // Temporary event listener for joining room 2/game-room 2
@@ -99,6 +95,9 @@ socket.on('users', users => {
     onlineUsersEl.innerHTML = usersArray.map(username => `<li>${username}</li>`).join("");
 });
 
+socket.on('gameFound', msg => {
+    console.log(msg);
+});
 
 
 // socket.on('gameFound', opponentSocket => {

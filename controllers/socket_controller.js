@@ -67,7 +67,7 @@ const handleDisconnect = async function () {
 //     this.to(secondUserSocket).emit("gameFound", this.id);
 // };
 
-const handleJoinGame = async function (room_id, username, callback) {
+const handleJoinGame = async function (room_id, username) {
     
     // find the game (room) that the client supplied
     const game_room = rooms.find(room => room.id === room_id);
@@ -90,7 +90,10 @@ const handleJoinGame = async function (room_id, username, callback) {
     };
 
     if (Object.keys(game_room.users).length === 2) {
-        callback({status: "Game is ready to start"})
+        const msg = "A game has been found."
+        // Client responds to this emit, some function runs and the game starts?
+        io.in(game_room.id).emit('gameFound', msg);
+        // callback({status: "Game is ready to start"})
     };
 };
 
