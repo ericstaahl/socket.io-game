@@ -58,15 +58,6 @@ const handleDisconnect = async function () {
     debug(users);
 };
 
-// // Send a message to another socket.id
-// const privateConnection = async function (secondUser) {
-//     debug("Listening for 'findGame")
-//     // Find the SocketID corresponding to the username ('secondUser')
-//     const secondUserSocket = Object.keys(users).find(key => users[key] === secondUser);
-//     debug("secondUsers socket ID: " + secondUserSocket)
-//     this.to(secondUserSocket).emit("gameFound", this.id);
-// };
-
 const handleJoinGame = async function (room_id, username) {
     
     // find the game (room) that the client supplied
@@ -103,8 +94,6 @@ module.exports = function (socket, _io) {
     socket.on('disconnect', handleDisconnect);
 
     socket.on('user:joined', handleUserJoined);
-
-    // socket.on('findGame', privateConnection);
 
     socket.on('joinGame', handleJoinGame);
 
