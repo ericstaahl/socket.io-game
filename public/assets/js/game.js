@@ -27,33 +27,20 @@ startForm.addEventListener('submit', e => {
         if (status.success === true) {
             startEl.classList.add('hide');
             gameEl.classList.remove('hide');
-            // createGrids(gridArea);
+            createGrids(gridArea);
+            //spawnVirus();
         }
     });
 });
 
-const imageEl= document.querySelector('#virus').src= '/assets/icons/virus.png'; // <---
+
 function createGrids(grid) {  
-    /*
-    const block = document.createElement('div'); // <---
-    div.appendChild(imageEl); // <---
-    //testa random 
-    let w = window.innerWidth = '100px'; // <---
-    let h = window.innerHeight = '100px'; // <---
-
-    let W = Math.floor(Math.random() * w); // <---
-    let H = Math.floor(Math.random() * h); // <---
-
-    block.style.top = H + 'px'; // <---
-    block.style.left = W + 'px'; // <---
-
-    grid.appendChild(block);
-    */
-    
+    console.log(gridArea);
     //for loop, sksapa en ny div i spelet
-    for (let i = 0; i < width * width; i++) {
-        const block = document.gridArea.createElement('div');
-        div.appendChild(imageEl); // <---
+    for (let i = 0; i < 8 * 10; i++) {
+        //console.log(width);
+        const block = document.createElement('div'); 
+        
 
         block.classList.add('block');
 
@@ -63,15 +50,41 @@ function createGrids(grid) {
         // Fäst divarna i spelområdet
         grid.appendChild(block);
     }   
+    const blockId = Math.floor(Math.random() * 79);
+    const imageEl= document.createElement('img');
+    imageEl.setAttribute('src','/assets/icons/virus.png');
+    console.log(imageEl);
+    
+    let randomBlock = document.getElementById(blockId);
+
+    
+    if(randomBlock !== null){
+        console.log(randomBlock);
+        randomBlock.appendChild(imageEl);
+    }
+    
+};
+/*
+gridArea.addEventListener('click', e => {
+    if(e.target.tagName === 'IMG'){}   
+});
+*/
+// -------- spawn virus with xy-coordinate (test) --------- 
+const spawnVirus = () => {
+
+    
+    block.appendChild(imageEl);
+
+    
+    
+    // Fix the divas in the gamiing-area
+    gridArea.appendChild(block);
+    
 };
 
-gridArea.addEventListener('click', e => {
-    if(e.target.tagName === 'IMG'){}
-    
-});
-
+// -------------------------------------
  
-
+//------- rooms ----------
 // Temporary event listener for joining room 1/game-room 1
 findGameBtn1.addEventListener('click', e => {
     e.preventDefault();
@@ -95,6 +108,7 @@ findGameBtn3.addEventListener('click', e => {
     gameStartInfoEl.innerText = "Waiting for another player...";
 });
 
+// ----- socket --------
 socket.on('user:disconnected', (username) => {
     console.log(`${username} has disconnected.`)
 });
