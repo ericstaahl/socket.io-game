@@ -53,13 +53,12 @@ div {
 
 #gameArea {
     background-color: #164659;
-    height: 80vh;
+    width: 500px;
+    height: 400px;
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(10, 1fr);
-    align-items: center;
-    gap: 2%;
-    
+    align-items: center;   
 }
 
 #virus {
@@ -74,10 +73,9 @@ div {
 }
 
 .block {
-    background-color: chartreuse;
     width: 50px;
     height: 50px;
-    position: absolute;
+    /*position: absolute;*/
 }
 
 
