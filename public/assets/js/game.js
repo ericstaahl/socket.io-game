@@ -4,6 +4,7 @@ const startEl = document.querySelector('#start');
 const gameEl = document.querySelector('#game');
 const gridArea = document.querySelector('#gameArea');
 const onlineUsersEl = document.querySelector('#online-users');
+const nameTakenEl = document.querySelector('#name-taken')
 //temporary query selectors for joining these rooms/gamerooms
 const findGameBtn1 = document.querySelector('#game1');
 const findGameBtn2 = document.querySelector('#game2');
@@ -20,7 +21,8 @@ startForm.addEventListener('submit', e => {
         // Server responds with an object. Includes success which is true if the sent username doesn't already exist
         console.log('Server has responded', status)
         if (status.success === false) {
-            console.log("Username already taken. Please try with a different one.")
+            console.log("Username already taken. Please a different one.")
+            nameTakenEl.classList.remove('hide');
         }
         if (status.success === true) {
             startEl.classList.add('hide');

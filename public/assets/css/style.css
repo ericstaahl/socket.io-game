@@ -44,6 +44,12 @@ div {
     margin-top: 10px;
 }
 
+#name-taken {
+    color: rgb(163, 161, 161);
+    font-weight: bold;
+    text-decoration: underline;
+}
+
 
 
 /* game page */
