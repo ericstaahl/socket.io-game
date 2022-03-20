@@ -85,7 +85,6 @@ const spawnVirus = () => {
 // -------------------------------------
  
 //------- rooms ----------
-// Temporary event listener for joining room 1/game-room 1
 findGameBtn1.addEventListener('click', e => {
     e.preventDefault();
     socket.emit('joinGame', /*findGameBtn1.id,*/ username);
@@ -93,20 +92,20 @@ findGameBtn1.addEventListener('click', e => {
     gameStartInfoEl.innerText = "Waiting for another player...";
 });
 
-// Temporary event listener for joining room 2/game-room 2
-findGameBtn2.addEventListener('click', e => {
-    e.preventDefault();
-    socket.emit('joinGame', findGameBtn2.id, username)
-    const gameStartInfoEl = document.querySelector('#game-start-info');
-    gameStartInfoEl.innerText = "Waiting for another player...";
-});
+// // Temporary event listener for joining room 2/game-room 2
+// findGameBtn2.addEventListener('click', e => {
+//     e.preventDefault();
+//     socket.emit('joinGame', findGameBtn2.id, username)
+//     const gameStartInfoEl = document.querySelector('#game-start-info');
+//     gameStartInfoEl.innerText = "Waiting for another player...";
+// });
 
-// Temporary event listener for joining room 3/game-room 3
-findGameBtn3.addEventListener('click', e => {
-    e.preventDefault();
-    socket.emit('joinGame', findGameBtn3.id, username);
-    gameStartInfoEl.innerText = "Waiting for another player...";
-});
+// // Temporary event listener for joining room 3/game-room 3
+// findGameBtn3.addEventListener('click', e => {
+//     e.preventDefault();
+//     socket.emit('joinGame', findGameBtn3.id, username);
+//     gameStartInfoEl.innerText = "Waiting for another player...";
+// });
 
 // ----- socket --------
 socket.on('user:disconnected', (username) => {
