@@ -92,11 +92,11 @@ const handleDisconnect = async function () {
 // };
 
 const handleJoinGameVer2 = async function (username) {
-    // Create a room if the rooms-array doesn't contain any
+    // Access game-room outside of below functions
     let _game_room;
-    // Somehow check if the other rooms already are full. Create separate array for full rooms? Maybe give them some value that shows that they are full?
+    
+    // Check if rooms (if any) are NOT full
     let roomFull = true;
-
     if (rooms.length !== 0) {
         let checkRooms = rooms.forEach(game_room => {
             if (Object.keys(game_room.users).length < 2) {
@@ -104,7 +104,8 @@ const handleJoinGameVer2 = async function (username) {
             }
         });
     };
-
+    
+    // Create a room if the rooms-array doesn't contain any OR the rooms are all full
     if (rooms.length === 0 || roomFull === true) {
         this.join(`game${nextRoomId}`);
         rooms[nextRoomId] = {
@@ -113,6 +114,7 @@ const handleJoinGameVer2 = async function (username) {
             users: {
             }
         };
+        // Save user in room
         rooms[nextRoomId].users[this.id] = username;
         _game_room = rooms[nextRoomId];
         // Add 1 to nextRoomId so that the next created room's id is unique
@@ -123,6 +125,7 @@ const handleJoinGameVer2 = async function (username) {
             const game_room = rooms[i];
             _game_room = game_room;
             debug("Current game-room: " + _game_room.id)
+            // Add a user to a room if it's not full, and then break out of the loop
             if (Object.keys(game_room.users).length < 2) {
                 this.join(game_room.id)
                 // add the users socket id to the rooms 'users' object
