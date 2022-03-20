@@ -7,22 +7,8 @@ const debug = require('debug')('game:socket_controller');
 // Object containing all users
 const users = {};
 const rooms = [
-    {
-        id: 'game1',
-        name: "Game 1",
-        users: {}
-    },
-    {
-        id: 'game2',
-        name: "Game 2",
-        users: {}
-    },
-    {
-        id: 'game3',
-        name: "Game 3",
-        users: {}
-    }
 ]
+let nextRoomId = 0;
 
 let io = null; // socket.io server instance
 
@@ -75,35 +61,93 @@ const handleDisconnect = async function () {
     });
 };
 
-const handleJoinGame = async function (room_id, username) {
-    
-    // find the game (room) that the client supplied
-    const game_room = rooms.find(room => room.id === room_id);
-    
-    debug("Number of keys in game_room.users: " + Object.keys(game_room.users).length);
-    if (Object.keys(game_room.users).length < 2) {
-        this.join(room_id);
-    
-        // add the users socket id to the rooms 'users' object
-        game_room.users[this.id] = username;
-    
-        rooms.forEach(room => {
-            debug(room);
-        });
-    } else {
-        debug("This room/game already has two players.")
-        rooms.forEach(room => {
-            debug(room);
+// const handleJoinGame = async function (room_id, username) {
+
+//     // find the game (room) that the client supplied
+//     const game_room = rooms.find(room => room.id === room_id);
+
+//     debug("Number of keys in game_room.users: " + Object.keys(game_room.users).length);
+//     if (Object.keys(game_room.users).length < 2) {
+//         this.join(room_id);
+
+//         // add the users socket id to the rooms 'users' object
+//         game_room.users[this.id] = username;
+
+//         rooms.forEach(room => {
+//             debug(room);
+//         });
+//     } else {
+//         debug("This room/game already has two players.")
+//         rooms.forEach(room => {
+//             debug(room);
+//         });
+//     };
+
+//     if (Object.keys(game_room.users).length === 2) {
+//         const msg = "A game has been found."
+//         // Client responds to this emit, some function runs and the game starts?
+//         io.in(game_room.id).emit('gameFound', msg);
+//         // callback({status: "Game is ready to start"})
+//     };
+// };
+
+const handleJoinGameVer2 = async function (username) {
+    // Create a room if the rooms-array doesn't contain any
+    let _game_room;
+    // Somehow check if the other rooms already are full. Create separate array for full rooms? Maybe give them some value that shows that they are full?
+    let roomFull = true;
+
+    if (rooms.length !== 0) {
+        let checkRooms = rooms.forEach(game_room => {
+            if (Object.keys(game_room.users).length < 2) {
+                roomFull = false;
+            }
         });
     };
 
-    if (Object.keys(game_room.users).length === 2) {
+    if (rooms.length === 0 || roomFull === true) {
+        this.join(`game${nextRoomId}`);
+        rooms[nextRoomId] = {
+            id: `game${nextRoomId}`,
+            name: `Game ${nextRoomId}`,
+            users: {
+            }
+        };
+        rooms[nextRoomId].users[this.id] = username;
+        _game_room = rooms[nextRoomId];
+        // Add 1 to nextRoomId so that the next created room's id is unique
+        nextRoomId++;
+    } else {
+        // otherwise check how many users the rooms in the array have
+        for (let i = 0; i < rooms.length; i++) {
+            const game_room = rooms[i];
+            _game_room = game_room;
+            debug("Current game-room: " + _game_room.id)
+            if (Object.keys(game_room.users).length < 2) {
+                this.join(game_room.id)
+                // add the users socket id to the rooms 'users' object
+                game_room.users[this.id] = username;
+                rooms.forEach(room => {
+                    debug(room);
+                });
+                break;
+            } else {
+                debug("This room/game already has two players.")
+                rooms.forEach(room => {
+                    debug(room);
+                });
+            };
+        };
+        debug("All rooms: " + rooms)
+    };
+
+    if (Object.keys(_game_room.users).length === 2) {
         const msg = "A game has been found."
         // Client responds to this emit, some function runs and the game starts?
-        io.in(game_room.id).emit('gameFound', msg);
+        io.in(_game_room.id).emit('gameFound', msg);
         // callback({status: "Game is ready to start"})
     };
-};
+}
 
 module.exports = function (socket, _io) {
     io = _io;
@@ -112,5 +156,5 @@ module.exports = function (socket, _io) {
 
     socket.on('user:joined', handleUserJoined);
 
-    socket.on('joinGame', handleJoinGame);
+    socket.on('joinGame', handleJoinGameVer2);
 };

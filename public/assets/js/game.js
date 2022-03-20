@@ -88,7 +88,7 @@ const spawnVirus = () => {
 // Temporary event listener for joining room 1/game-room 1
 findGameBtn1.addEventListener('click', e => {
     e.preventDefault();
-    socket.emit('joinGame', findGameBtn1.id, username);
+    socket.emit('joinGame', /*findGameBtn1.id,*/ username);
     const gameStartInfoEl = document.querySelector('#game-start-info');
     gameStartInfoEl.innerText = "Waiting for another player...";
 });
