@@ -13,6 +13,7 @@ const gameStartInfoEl = document.querySelector('#game-start-info');
 
 let room = null;
 let username = null;
+let blockId;
 
 startForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -50,7 +51,6 @@ function createGrids(grid) {
         // Fäst divarna i spelområdet
         grid.appendChild(block);
     }
-    const blockId = Math.floor(Math.random() * 64);
     const imageEl = document.createElement('img');
     imageEl.setAttribute('src', '/assets/icons/virus.png');
     imageEl.classList.add('img-fluid')
@@ -127,8 +127,9 @@ socket.on('users', users => {
     onlineUsersEl.innerHTML = usersArray.map(username => `<li>${username}</li>`).join("");
 });
 
-socket.on('gameFound', msg => {
-    console.log(msg);
+socket.on('gameFound', randomId => {
+    console.log(randomId);
+    blockId = randomId;
     gameStartInfoEl.innerText = "A game has been found!";
     createGrids(gridArea);
 });

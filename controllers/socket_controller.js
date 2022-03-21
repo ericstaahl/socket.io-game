@@ -146,8 +146,10 @@ const handleJoinGameVer2 = async function (username) {
 
     if (Object.keys(_game_room.users).length === 2) {
         const msg = "A game has been found."
-        // Client responds to this emit, some function runs and the game starts?
-        io.in(_game_room.id).emit('gameFound', msg);
+        // Randomise virus position
+        const blockId = Math.floor(Math.random() * 64);
+        // Client listens to this emit, some function runs and the game starts
+        io.in(_game_room.id).emit('gameFound', blockId);
         // callback({status: "Game is ready to start"})
     };
 }
