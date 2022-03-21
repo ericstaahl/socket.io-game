@@ -7,8 +7,8 @@ const onlineUsersEl = document.querySelector('#online-users');
 const nameTakenEl = document.querySelector('#name-taken')
 //temporary query selectors for joining these rooms/gamerooms
 const findGameBtn1 = document.querySelector('#game1');
-const findGameBtn2 = document.querySelector('#game2');
-const findGameBtn3 = document.querySelector('#game3');
+// const findGameBtn2 = document.querySelector('#game2');
+// const findGameBtn3 = document.querySelector('#game3');
 const gameStartInfoEl = document.querySelector('#game-start-info');
 
 let room = null;
@@ -34,13 +34,13 @@ startForm.addEventListener('submit', e => {
 });
 
 
-function createGrids(grid) {  
+function createGrids(grid) {
     console.log(gridArea);
     //for loop, sksapa en ny div i spelet
     for (let i = 0; i < 65; i++) {
         //console.log(width);
-        const block = document.createElement('div'); 
-        
+        const block = document.createElement('div');
+
 
         block.classList.add('block');
 
@@ -49,45 +49,47 @@ function createGrids(grid) {
 
         // Fäst divarna i spelområdet
         grid.appendChild(block);
-    }   
+    }
     const blockId = Math.floor(Math.random() * 64);
-    const imageEl= document.createElement('img');
-    imageEl.setAttribute('src','/assets/icons/virus.png');
+    const imageEl = document.createElement('img');
+    imageEl.setAttribute('src', '/assets/icons/virus.png');
     imageEl.classList.add('img-fluid')
     console.log(imageEl);
-    
+
     let randomBlock = document.querySelector(`[data-id='${blockId}']`);
     console.log("The randomised block: " + randomBlock)
 
-    
-    if(randomBlock !== null){
-        console.log(randomBlock);
+
+    if (randomBlock !== null) {
         randomBlock.appendChild(imageEl);
     }
-    
+
     gridArea.addEventListener('click', e => {
-        if(e.target.tagName === 'IMG'){
+        if (e.target.tagName === 'IMG') {
             console.log("You clicked on the virus!")
-        }   
+        };
+        const timeClicked = Date.now();
+        console.log(timeClicked);
+        socket.emit('timeWhenClicked', timeClicked);
     });
 };
 
 
 // -------- spawn virus with xy-coordinate (test) --------- 
-const spawnVirus = () => {
+// const spawnVirus = () => {
 
-    
-    block.appendChild(imageEl);
 
-    
-    
-    // Fix the divas in the gaming-area
-    gridArea.appendChild(block);
-    
-};
+//     block.appendChild(imageEl);
+
+
+
+//     // Fix the divas in the gaming-area
+//     gridArea.appendChild(block);
+
+// };
 
 // -------------------------------------
- 
+
 //------- rooms ----------
 findGameBtn1.addEventListener('click', e => {
     e.preventDefault();
