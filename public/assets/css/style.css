@@ -60,7 +60,7 @@ div {
 #gameArea {
     background-color: #164659;
     width: 500px;
-    height: 400px;
+    height: 500px;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(10, 1fr);
