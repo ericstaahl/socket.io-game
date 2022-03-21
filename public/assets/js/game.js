@@ -59,6 +59,11 @@ function generateVirus() {
     imageEl.classList.add('img-fluid')
     console.log(imageEl);
 
+    socket.emit('virusPosition', (randomId) => {
+        console.log('Server has responded', randomId);
+        blockId = randomId;
+    });
+
     let randomBlock = document.querySelector(`[data-id='${blockId}']`);
     console.log("The randomised block: " + randomBlock)
 
@@ -76,10 +81,6 @@ gridArea.addEventListener('click', e => {
         socket.emit('timeWhenClicked', timeClicked);
         imageEl.remove();
         if (numberOfRounds <= 10) {
-            socket.emit('virusPosition', (randomId) => {
-                console.log('Server has responded', randomId);
-                blockId = randomId;
-            });
             generateVirus();
         }
     };
