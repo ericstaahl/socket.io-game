@@ -27,7 +27,7 @@ startForm.addEventListener('submit', e => {
         if (status.success === true) {
             startEl.classList.add('hide');
             gameEl.classList.remove('hide');
-            createGrids(gridArea);
+            // createGrids(gridArea);
             //spawnVirus();
         }
     });
@@ -37,7 +37,7 @@ startForm.addEventListener('submit', e => {
 function createGrids(grid) {  
     console.log(gridArea);
     //for loop, sksapa en ny div i spelet
-    for (let i = 0; i < 8 * 10; i++) {
+    for (let i = 0; i < 65; i++) {
         //console.log(width);
         const block = document.createElement('div'); 
         
@@ -50,12 +50,14 @@ function createGrids(grid) {
         // Fäst divarna i spelområdet
         grid.appendChild(block);
     }   
-    const blockId = Math.floor(Math.random() * 79);
+    const blockId = Math.floor(Math.random() * 64);
     const imageEl= document.createElement('img');
     imageEl.setAttribute('src','/assets/icons/virus.png');
+    imageEl.classList.add('img-fluid')
     console.log(imageEl);
     
-    let randomBlock = document.getElementById(blockId);
+    let randomBlock = document.querySelector(`[data-id='${blockId}']`);
+    console.log("The randomised block: " + randomBlock)
 
     
     if(randomBlock !== null){
@@ -63,12 +65,14 @@ function createGrids(grid) {
         randomBlock.appendChild(imageEl);
     }
     
+    gridArea.addEventListener('click', e => {
+        if(e.target.tagName === 'IMG'){
+            console.log("You clicked on the virus!")
+        }   
+    });
 };
-/*
-gridArea.addEventListener('click', e => {
-    if(e.target.tagName === 'IMG'){}   
-});
-*/
+
+
 // -------- spawn virus with xy-coordinate (test) --------- 
 const spawnVirus = () => {
 
@@ -77,7 +81,7 @@ const spawnVirus = () => {
 
     
     
-    // Fix the divas in the gamiing-area
+    // Fix the divas in the gaming-area
     gridArea.appendChild(block);
     
 };
@@ -124,4 +128,5 @@ socket.on('users', users => {
 socket.on('gameFound', msg => {
     console.log(msg);
     gameStartInfoEl.innerText = "A game has been found!";
+    createGrids(gridArea);
 });
