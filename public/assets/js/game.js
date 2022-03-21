@@ -133,3 +133,8 @@ socket.on('gameFound', randomId => {
     gameStartInfoEl.innerText = "A game has been found!";
     createGrids(gridArea);
 });
+
+
+socket.on('gridArea: clicked', (click) => {
+    console.log(click);
+});
