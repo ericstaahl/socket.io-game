@@ -73,6 +73,16 @@ function createGrids(grid) {
     });
 };
 
+let gameScore = 0;
+socket.on('gameScores', (data) => {
+    let myGameTime = time;
+    if (myGameTime === data) {
+        gameScore++;
+    } else if (myGameTime === data) {
+        return;
+    }
+});
+
 
 //------- rooms ----------
 findGameBtn1.addEventListener('click', e => {
