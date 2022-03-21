@@ -64,6 +64,7 @@ function createGrids(grid) {
         randomBlock.appendChild(imageEl);
     }
 
+
     gridArea.addEventListener('click', e => {
         if (e.target.tagName === 'IMG') {
             console.log("You clicked on the virus!")
@@ -74,21 +75,6 @@ function createGrids(grid) {
     });
 };
 
-
-// -------- spawn virus with xy-coordinate (test) --------- 
-// const spawnVirus = () => {
-
-
-//     block.appendChild(imageEl);
-
-
-
-//     // Fix the divas in the gaming-area
-//     gridArea.appendChild(block);
-
-// };
-
-// -------------------------------------
 
 //------- rooms ----------
 findGameBtn1.addEventListener('click', e => {
