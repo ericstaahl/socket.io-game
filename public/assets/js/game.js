@@ -73,16 +73,13 @@ function createGrids(grid) {
     });
 };
 
-let gameScore = 0;
-socket.on('gameScores', (data) => {
-    let myGameTime = time;
-    if (myGameTime === data) {
-        gameScore++;
-    } else if (myGameTime === data) {
-        return;
-    }
-});
-
+const scoreboard = ({ winnerId, score }) => {
+	if (winnerId === username) {
+		setInnerHTML('#player-score', score);
+	} else {
+		setInnerHTML('#opponent-score', score);
+	}
+}
 
 //------- rooms ----------
 findGameBtn1.addEventListener('click', e => {
@@ -117,3 +114,5 @@ socket.emit('virusPosition', (randomId) => {
     console.log('Server has responded', randomId);
     blockId = randomId;
 })
+
+socket.on('update-scoreboard', scoreboard);
