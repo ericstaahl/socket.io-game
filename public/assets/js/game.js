@@ -116,3 +116,8 @@ socket.on('gameFound', randomId => {
     gameStartInfoEl.innerText = "A game has been found!";
     createGrids(gridArea);
 });
+
+socket.emit('virusPosition', (randomId) => {
+    console.log('Server has responded', randomId);
+    blockId = randomId;
+})

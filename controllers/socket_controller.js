@@ -64,7 +64,7 @@ const handleDisconnect = async function () {
 const handleJoinGameVer2 = async function (username) {
     // Access game-room outside of below functions
     let _game_room;
-    
+
     // Check if rooms (if any) are NOT full
     let roomFull = true;
     if (rooms.length !== 0) {
@@ -74,7 +74,7 @@ const handleJoinGameVer2 = async function (username) {
             }
         });
     };
-    
+
     // Create a room if the rooms-array doesn't contain any OR the rooms are all full
     if (rooms.length === 0 || roomFull === true) {
         this.join(`game${nextRoomId}`);
@@ -115,12 +115,16 @@ const handleJoinGameVer2 = async function (username) {
     };
 
     if (Object.keys(_game_room.users).length === 2) {
-        const msg = "A game has been found."
         // Randomise virus position
         const blockId = Math.floor(Math.random() * 64);
         // Client listens to this emit, some function runs and the game starts
         io.in(_game_room.id).emit('gameFound', blockId);
     };
+}
+
+const virusPosition = function (callback) {
+    const blockId = Math.floor(Math.random() * 64);
+    callback(blockId);
 }
 
 module.exports = function (socket, _io) {
@@ -131,4 +135,6 @@ module.exports = function (socket, _io) {
     socket.on('user:joined', handleUserJoined);
 
     socket.on('joinGame', handleJoinGameVer2);
+
+    socket.on('virusPosition', virusPosition);
 };
