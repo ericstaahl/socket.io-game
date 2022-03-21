@@ -61,40 +61,10 @@ const handleDisconnect = async function () {
     });
 };
 
-// const handleJoinGame = async function (room_id, username) {
-
-//     // find the game (room) that the client supplied
-//     const game_room = rooms.find(room => room.id === room_id);
-
-//     debug("Number of keys in game_room.users: " + Object.keys(game_room.users).length);
-//     if (Object.keys(game_room.users).length < 2) {
-//         this.join(room_id);
-
-//         // add the users socket id to the rooms 'users' object
-//         game_room.users[this.id] = username;
-
-//         rooms.forEach(room => {
-//             debug(room);
-//         });
-//     } else {
-//         debug("This room/game already has two players.")
-//         rooms.forEach(room => {
-//             debug(room);
-//         });
-//     };
-
-//     if (Object.keys(game_room.users).length === 2) {
-//         const msg = "A game has been found."
-//         // Client responds to this emit, some function runs and the game starts?
-//         io.in(game_room.id).emit('gameFound', msg);
-//         // callback({status: "Game is ready to start"})
-//     };
-// };
-
 const handleJoinGameVer2 = async function (username) {
     // Access game-room outside of below functions
     let _game_room;
-    
+
     // Check if rooms (if any) are NOT full
     let roomFull = true;
     if (rooms.length !== 0) {
@@ -104,7 +74,7 @@ const handleJoinGameVer2 = async function (username) {
             }
         });
     };
-    
+
     // Create a room if the rooms-array doesn't contain any OR the rooms are all full
     if (rooms.length === 0 || roomFull === true) {
         this.join(`game${nextRoomId}`);
@@ -145,13 +115,16 @@ const handleJoinGameVer2 = async function (username) {
     };
 
     if (Object.keys(_game_room.users).length === 2) {
-        const msg = "A game has been found."
         // Randomise virus position
         const blockId = Math.floor(Math.random() * 64);
         // Client listens to this emit, some function runs and the game starts
         io.in(_game_room.id).emit('gameFound', blockId);
-        // callback({status: "Game is ready to start"})
     };
+}
+
+const virusPosition = function (callback) {
+    const blockId = Math.floor(Math.random() * 64);
+    callback(blockId);
 }
 
 module.exports = function (socket, _io) {
@@ -162,4 +135,6 @@ module.exports = function (socket, _io) {
     socket.on('user:joined', handleUserJoined);
 
     socket.on('joinGame', handleJoinGameVer2);
+
+    socket.on('virusPosition', virusPosition);
 };
