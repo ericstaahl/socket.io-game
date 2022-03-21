@@ -12,6 +12,7 @@ const gameStartInfoEl = document.querySelector('#game-start-info');
 let room = null;
 let username = null;
 let blockId;
+let numberOfRounds = 0;
 
 startForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -35,7 +36,7 @@ startForm.addEventListener('submit', e => {
 
 function createGrids(grid) {
     console.log(gridArea);
-    //for loop, sksapa en ny div i spelet
+    //for loop, skapa en ny div i spelet
     for (let i = 0; i < 65; i++) {
         //console.log(width);
         const block = document.createElement('div');
@@ -60,7 +61,7 @@ function createGrids(grid) {
 
     if (randomBlock !== null) {
         randomBlock.appendChild(imageEl);
-    }
+    };
 
 
     gridArea.addEventListener('click', e => {
@@ -69,6 +70,13 @@ function createGrids(grid) {
             const timeClicked = Date.now();
             console.log(timeClicked);
             socket.emit('timeWhenClicked', timeClicked);
+            if (numberOfRounds <= 10) {
+                socket.emit('virusPosition', (randomId) => {
+                    console.log('Server has responded', randomId);
+                    blockId = randomId;
+                });
+                createGrids(grid);
+            }
         };
     });
 };
@@ -112,8 +120,3 @@ socket.on('gameFound', randomId => {
     gameStartInfoEl.innerText = "A game has been found!";
     createGrids(gridArea);
 });
-
-socket.emit('virusPosition', (randomId) => {
-    console.log('Server has responded', randomId);
-    blockId = randomId;
-})
