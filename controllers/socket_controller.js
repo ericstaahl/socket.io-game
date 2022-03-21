@@ -20,6 +20,9 @@ const handleUserJoined = async function (username, callback) {
     // add the user to the users object
     debug('Listening for "user-join"')
 
+    // Trims whitespace from user input
+    username = username.trim();
+
     const usersArray = Object.values(users);
     const found = usersArray.includes(username)
     if (!found) {
