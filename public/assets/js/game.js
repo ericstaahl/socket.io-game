@@ -20,7 +20,7 @@ startForm.addEventListener('submit', e => {
         // Server responds with an object. Includes success which is true if the sent username doesn't already exist
         console.log('Server has responded', status)
         if (status.success === false) {
-            console.log("Username already taken. Please a different one.")
+            console.log("Username already taken/is unvalid. Please try a different one.")
             nameTakenEl.classList.remove('hide');
         }
         if (status.success === true) {
@@ -66,10 +66,10 @@ function createGrids(grid) {
     gridArea.addEventListener('click', e => {
         if (e.target.tagName === 'IMG') {
             console.log("You clicked on the virus!")
+            const timeClicked = Date.now();
+            console.log(timeClicked);
+            socket.emit('timeWhenClicked', timeClicked);
         };
-        const timeClicked = Date.now();
-        console.log(timeClicked);
-        socket.emit('timeWhenClicked', timeClicked);
     });
 };
 
