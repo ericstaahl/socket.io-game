@@ -28,7 +28,7 @@ const handleUserJoined = async function (username, callback) {
     debug(users);
 
     // Confirm to client that they have joined
-    if (!found) {
+    if (!found && username !== "") {
         callback({
             success: true,
         })
