@@ -130,6 +130,16 @@ const virusPosition = function (callback) {
     callback(blockId);
 }
 
+const getScoreboard = (user, opponent) => {
+	if (user.reactionTime < opponent.reactionTime) {
+		user.score++;
+		return { winnerId: user.id, score: user.score };
+	} else {
+		opponent.score++;
+		return { winnerId: opponent.id, score: opponent.score };
+	}
+}
+
 module.exports = function (socket, _io) {
     io = _io;
 
