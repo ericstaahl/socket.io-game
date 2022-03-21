@@ -5,6 +5,7 @@ const gameEl = document.querySelector('#game');
 const gridArea = document.querySelector('#gameArea');
 const onlineUsersEl = document.querySelector('#online-users');
 const nameTakenEl = document.querySelector('#name-taken')
+let imageEl;
 //temporary query selectors for joining these rooms/gamerooms
 const findGameBtn1 = document.querySelector('#game1');
 const gameStartInfoEl = document.querySelector('#game-start-info');
@@ -33,7 +34,6 @@ startForm.addEventListener('submit', e => {
     });
 });
 
-
 function createGrids(grid) {
     console.log(gridArea);
     //for loop, skapa en ny div i spelet
@@ -50,7 +50,11 @@ function createGrids(grid) {
         // Fäst divarna i spelområdet
         grid.appendChild(block);
     }
-    const imageEl = document.createElement('img');
+    generateVirus();
+};
+
+function generateVirus() {
+    imageEl = document.createElement('img');
     imageEl.setAttribute('src', '/assets/icons/virus.png');
     imageEl.classList.add('img-fluid')
     console.log(imageEl);
@@ -62,24 +66,25 @@ function createGrids(grid) {
     if (randomBlock !== null) {
         randomBlock.appendChild(imageEl);
     };
-
-
-    gridArea.addEventListener('click', e => {
-        if (e.target.tagName === 'IMG') {
-            console.log("You clicked on the virus!")
-            const timeClicked = Date.now();
-            console.log(timeClicked);
-            socket.emit('timeWhenClicked', timeClicked);
-            if (numberOfRounds <= 10) {
-                socket.emit('virusPosition', (randomId) => {
-                    console.log('Server has responded', randomId);
-                    blockId = randomId;
-                });
-                createGrids(grid);
-            }
-        };
-    });
 };
+
+gridArea.addEventListener('click', e => {
+    if (e.target.tagName === 'IMG') {
+        console.log("You clicked on the virus!")
+        const timeClicked = Date.now();
+        console.log(timeClicked);
+        socket.emit('timeWhenClicked', timeClicked);
+        imageEl.remove();
+        if (numberOfRounds <= 10) {
+            socket.emit('virusPosition', (randomId) => {
+                console.log('Server has responded', randomId);
+                blockId = randomId;
+            });
+            generateVirus();
+        }
+    };
+});
+
 
 let gameScore = 0;
 socket.on('gameScores', (data) => {
