@@ -62,28 +62,22 @@ function createGrids(grid) {
         console.log(randomBlock);
         randomBlock.appendChild(imageEl);
     }
-    
-};
-/*
-gridArea.addEventListener('click', e => {
-    if(e.target.tagName === 'IMG'){}   
-});
-*/
-// -------- spawn virus with xy-coordinate (test) --------- 
-const spawnVirus = () => {
 
-    
-    block.appendChild(imageEl);
 
-    
-    
-    // Fix the divas in the gamiing-area
-    gridArea.appendChild(block);
-    
+    let gameCount;
+    gridArea.addEventListener('click', e => {
+        if (e.target.tagName === 'IMG') {
+            console.log("You clicked on the virus!")
+        };
+        
+        const timeClicked = Date.now();
+        console.log(timeClicked);
+        socket.emit('timeWhenClicked', timeClicked);
+        
+    });
 };
 
-// -------------------------------------
- 
+
 //------- rooms ----------
 findGameBtn1.addEventListener('click', e => {
     e.preventDefault();
