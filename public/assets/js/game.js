@@ -67,12 +67,22 @@ function createGrids(grid) {
     gridArea.addEventListener('click', e => {
         if (e.target.tagName === 'IMG') {
             console.log("You clicked on the virus!")
+            const timeClicked = Date.now();
+            console.log(timeClicked);
+            socket.emit('timeWhenClicked', timeClicked);
         };
-        const timeClicked = Date.now();
-        console.log(timeClicked);
-        socket.emit('timeWhenClicked', timeClicked);
     });
 };
+
+let gameScore = 0;
+socket.on('gameScores', (data) => {
+    let myGameTime = time;
+    if (myGameTime === data) {
+        gameScore++;
+    } else if (myGameTime === data) {
+        return;
+    }
+});
 
 
 // -------- spawn virus with xy-coordinate (test) --------- 
@@ -132,9 +142,4 @@ socket.on('gameFound', randomId => {
     blockId = randomId;
     gameStartInfoEl.innerText = "A game has been found!";
     createGrids(gridArea);
-});
-
-
-socket.on('gridArea: clicked', (click) => {
-    console.log(click);
 });
