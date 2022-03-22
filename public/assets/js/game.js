@@ -78,7 +78,7 @@ gridArea.addEventListener('click', e => {
         const timeClicked = Date.now();
         console.log(timeClicked);
         imageEl.remove();
-        socket.emit('timeWhenClicked', {timeClicked, room});
+        socket.emit('timeWhenClicked', {timeClicked, username, room});
     };
 });
 

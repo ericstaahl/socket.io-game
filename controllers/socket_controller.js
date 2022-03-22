@@ -139,7 +139,8 @@ const handleScore = function (response) {
 // 3. Tell the client to render the next virus?    
 const timeClicked = response.timeClicked;
 const roomId = response.room;
-debug(`${timeClicked} and the corresponding room ID: ${roomId}.`);
+const username = response.username;
+debug(`TimeClicked: ${timeClicked}, Room ID: ${roomId}, Username: ${username}`);
 };
 
 // Startade koden för scoreboarden, men behöver få fram reaktionstiden för att komma vidare så att spelarna kan få poäng
