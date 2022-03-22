@@ -11,6 +11,7 @@ const findGameBtn1 = document.querySelector('#game1');
 // const findGameBtn2 = document.querySelector('#game2');
 // const findGameBtn3 = document.querySelector('#game3');
 const gameStartInfoEl = document.querySelector('#game-start-info');
+const timerEl = document.querySelector('#timer');
 
 let room = null;
 let username = null;
@@ -90,14 +91,26 @@ gridArea.addEventListener('click', e => {
     };
 });
 
+// ----timer-----
+const start = false;
+const startTime = 0;
+const myTime = new Date().getMilliseconds();
+const delay = 1000 - myTime;
+
+setTimeout(function(){
+    intervalID = setInterval(function(){
+        myTime = new Date().getTime();
+        console.log(myTime);
+        if (start = true && startTime <= myTime) {
+            startCountdown();
+        }
+    }, 100); //put 1000 to check every second if second is round 
+             //or put 100 or 200 is second is not round
+}, delay);
 
 
-const scoreboard = ({ winnerId, score }) => {
-	if (winnerId === username) {
-		setInnerHTML('#player-score', score);
-	} else {
-		setInnerHTML('#opponent-score', score);
-	}
+function startCountdown(){
+    //time countdown
 }
 
 //------- rooms ----------
@@ -153,3 +166,9 @@ socket.emit('virusPosition', (randomId) => {
 socket.on('update-scoreboard', scoreboard);
 
 socket.on('timeWhenClicked', timeClicked);
+
+// timer
+socket.on('data loaded', data =>{        
+    startTime = data.time;
+    start = true;
+});
