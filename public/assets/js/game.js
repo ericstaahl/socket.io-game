@@ -41,7 +41,6 @@ function createGrids(grid) {
         //console.log(width);
         const block = document.createElement('div');
 
-
         block.classList.add('block');
 
         // Ge varje ny div ett id
@@ -79,11 +78,7 @@ gridArea.addEventListener('click', e => {
         const timeClicked = Date.now();
         console.log(timeClicked);
         imageEl.remove();
-        socket.emit('timeWhenClicked', timeClicked, () => {
-            // if (numberOfRounds <= 10) {
-            //     generateVirus();
-            // };
-        });
+        socket.emit('timeWhenClicked', {timeClicked, room});
     };
 });
 

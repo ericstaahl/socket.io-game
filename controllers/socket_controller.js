@@ -14,7 +14,7 @@ let io = null; // socket.io server instance
 
 const getRoomByUserId = id => {
     return rooms.find(chatroom => chatroom.users.hasOwnProperty(id))
-}
+};
 
 const handleUserJoined = async function (username, callback) {
     // add the user to the users object
@@ -46,7 +46,7 @@ const handleUserJoined = async function (username, callback) {
 const handleDisconnect = async function () {
     //remove the user from the users object
     // debug('Listening for "user-disconnected"')
-    console.log(`${users[this.id]} has disconnected`);
+    debug(`${users[this.id]} has disconnected`);
     delete users[this.id];
     debug(users);
 
@@ -122,7 +122,7 @@ const handleJoinGameVer2 = async function (username) {
         // Randomise virus position
         const blockId = Math.floor(Math.random() * 64);
         // Client listens to this emit, some function runs and the game starts
-        console.log("The id of the room created: " + nextRoomId)
+        debug("The id of the room created: " + nextRoomId)
         const roomId = _game_room.id;
         io.in(_game_room.id).emit('gameFound', {blockId, roomId});
     };
@@ -133,13 +133,14 @@ const virusPosition = function (callback) {
     callback(blockId);
 };
 
-const handleScore = function (callback) {
+const handleScore = function (response) {
 // 1. Check the socket ID of the incoming timestamps?
 // 2. when two have been recieved from the same room calculate the score?
 // 3. Tell the client to render the next virus?    
-
-
-}
+const timeClicked = response.timeClicked;
+const roomId = response.room;
+debug(`${timeClicked} and the corresponding room ID: ${roomId}.`);
+};
 
 // Startade koden för scoreboarden, men behöver få fram reaktionstiden för att komma vidare så att spelarna kan få poäng
 /*
@@ -164,4 +165,6 @@ module.exports = function (socket, _io) {
     socket.on('joinGame', handleJoinGameVer2);
 
     socket.on('virusPosition', virusPosition);
+
+    socket.on('timeWhenClicked', handleScore);
 };
