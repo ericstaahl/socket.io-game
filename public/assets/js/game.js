@@ -7,6 +7,8 @@ const onlineUsersEl = document.querySelector('#online-users');
 const nameTakenEl = document.querySelector('#name-taken')
 //temporary query selectors for joining these rooms/gamerooms
 const findGameBtn1 = document.querySelector('#game1');
+// const findGameBtn2 = document.querySelector('#game2');
+// const findGameBtn3 = document.querySelector('#game3');
 const gameStartInfoEl = document.querySelector('#game-start-info');
 
 let room = null;
@@ -31,7 +33,6 @@ startForm.addEventListener('submit', e => {
         }
     });
 });
-
 
 function createGrids(grid) {
     console.log(gridArea);
@@ -62,17 +63,20 @@ function createGrids(grid) {
         randomBlock.appendChild(imageEl);
     }
 
-
     gridArea.addEventListener('click', e => {
         if (e.target.tagName === 'IMG') {
             console.log("You clicked on the virus!")
         };
         const timeClicked = Date.now();
-        console.log(timeClicked);
-        socket.emit('timeWhenClicked', timeClicked);
-    });
+        console.log('timeClicked: ',timeClicked);
+        socket.emit('timeWhenClicked', timeClicked);   
+    });   
 };
 
+//-----
+
+
+//-----
 
 //------- rooms ----------
 findGameBtn1.addEventListener('click', e => {
@@ -81,6 +85,21 @@ findGameBtn1.addEventListener('click', e => {
     const gameStartInfoEl = document.querySelector('#game-start-info');
     gameStartInfoEl.innerText = "Waiting for another player...";
 });
+
+// // Temporary event listener for joining room 2/game-room 2
+// findGameBtn2.addEventListener('click', e => {
+//     e.preventDefault();
+//     socket.emit('joinGame', findGameBtn2.id, username)
+//     const gameStartInfoEl = document.querySelector('#game-start-info');
+//     gameStartInfoEl.innerText = "Waiting for another player...";
+// });
+
+// // Temporary event listener for joining room 3/game-room 3
+// findGameBtn3.addEventListener('click', e => {
+//     e.preventDefault();
+//     socket.emit('joinGame', findGameBtn3.id, username);
+//     gameStartInfoEl.innerText = "Waiting for another player...";
+// });
 
 // ----- socket --------
 socket.on('user:disconnected', (username) => {
@@ -102,8 +121,3 @@ socket.on('gameFound', randomId => {
     gameStartInfoEl.innerText = "A game has been found!";
     createGrids(gridArea);
 });
-
-socket.emit('virusPosition', (randomId) => {
-    console.log('Server has responded', randomId);
-    blockId = randomId;
-})
