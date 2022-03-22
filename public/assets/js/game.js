@@ -130,3 +130,5 @@ socket.emit('virusPosition', (randomId) => {
 })
 
 socket.on('update-scoreboard', scoreboard);
+
+socket.on('timeWhenClicked', timeClicked);
