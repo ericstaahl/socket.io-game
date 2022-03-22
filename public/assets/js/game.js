@@ -78,21 +78,22 @@ gridArea.addEventListener('click', e => {
         console.log("You clicked on the virus!")
         const timeClicked = Date.now();
         console.log(timeClicked);
-        socket.emit('timeWhenClicked', timeClicked);
         imageEl.remove();
-        if (numberOfRounds <= 10) {
-            generateVirus();
-        }
+        socket.emit('timeWhenClicked', timeClicked, () => {
+            // if (numberOfRounds <= 10) {
+            //     generateVirus();
+            // };
+        });
     };
 });
 
 
 const scoreboard = ({ winnerId, score }) => {
-	if (winnerId === username) {
-		setInnerHTML('#player-score', score);
-	} else {
-		setInnerHTML('#opponent-score', score);
-	}
+    if (winnerId === username) {
+        setInnerHTML('#player-score', score);
+    } else {
+        setInnerHTML('#opponent-score', score);
+    }
 }
 
 //------- rooms ----------
@@ -117,9 +118,11 @@ socket.on('users', users => {
     onlineUsersEl.innerHTML = usersArray.map(username => `<li>${username}</li>`).join("");
 });
 
-socket.on('gameFound', randomId => {
-    console.log(randomId);
-    blockId = randomId;
+socket.on('gameFound', (ids) => {
+    console.log("Object sent from server-side :" + ids);
+    blockId = ids.blockId;
+    room = ids.roomId;
+    console.log("Room from the sent array: " + room);
     gameStartInfoEl.innerText = "A game has been found!";
     createGrids(gridArea);
 });

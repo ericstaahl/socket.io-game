@@ -85,7 +85,8 @@ const handleJoinGameVer2 = async function (username) {
             id: `game${nextRoomId}`,
             name: `Game ${nextRoomId}`,
             users: {
-            }
+            },
+            rounds: 0,
         };
         // Save user in room
         rooms[nextRoomId].users[this.id] = username;
@@ -121,24 +122,35 @@ const handleJoinGameVer2 = async function (username) {
         // Randomise virus position
         const blockId = Math.floor(Math.random() * 64);
         // Client listens to this emit, some function runs and the game starts
-        io.in(_game_room.id).emit('gameFound', blockId);
+        console.log("The id of the room created: " + nextRoomId)
+        const roomId = _game_room.id;
+        io.in(_game_room.id).emit('gameFound', {blockId, roomId});
     };
 }
 
 const virusPosition = function (callback) {
     const blockId = Math.floor(Math.random() * 64);
     callback(blockId);
+};
+
+const handleScore = function (callback) {
+// 1. Check the socket ID of the incoming timestamps?
+// 2. when two have been recieved from the same room calculate the score?
+// 3. Tell the client to render the next virus?    
+
+
+}
 
 // Startade koden för scoreboarden, men behöver få fram reaktionstiden för att komma vidare så att spelarna kan få poäng
-}/*
+/*
 const getScoreboard = (user, opponent) => {
-	if (user.reactionTime < opponent.reactionTime) {
-		user.score++;
-		return { winnerId: user.id, score: user.score };
-	} else {
-		opponent.score++;
-		return { winnerId: opponent.id, score: opponent.score };
-	}
+    if (user.reactionTime < opponent.reactionTime) {
+        user.score++;
+        return { winnerId: user.id, score: user.score };
+    } else {
+        opponent.score++;
+        return { winnerId: opponent.id, score: opponent.score };
+    }
 }
 */
 
