@@ -93,8 +93,27 @@ gridArea.addEventListener('click', e => {
         console.log(timeDifference);
         reactionTime=(timeClicked-createTime)/1000; //<
         //console.log('timeClicked, reactionTime ',timeClicked, reactionTime);
-        timerEl.innerHTML = `${reactionTime}`;
+
         socket.emit('timeWhenClicked', { timeDifference, room });
+
+        timerEl.innerHTML = `Your Reaction Time is: ${reactionTime} seconds`;
+        socket.emit('timeWhenClicked; ', timeClicked);
+        imageEl.remove();
+        if (numberOfRounds < 10) {
+            generateVirus();
+        } else if (numberOfRounds === 10) { // After 10 games: Continue/Exit, Results Screen
+            gameEl.innerHTML = ``;
+            gameEl.innerHTML =
+            `<div id="result-wrapper" class="flex columns justify-content: center;">
+                <div id="result" >
+                    <h2 class="title"> 0 : 0 </h2>
+                    <button class="btn btn-primary mx-2">continue</button>
+                    <button class="btn btn-primary mx-2">quit</button>
+                </div>
+            </div>
+            `
+        }
+
     };
 });
 
