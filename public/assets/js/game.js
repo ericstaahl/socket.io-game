@@ -14,6 +14,7 @@ let room = null;
 let username = null;
 let blockId;
 let numberOfRounds = 0;
+let timeWhenAppeared;
 
 startForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -58,9 +59,9 @@ function generateVirus() {
     imageEl.classList.add('img-fluid')
     console.log(imageEl);
 
-    socket.emit('virusPosition', (randomId) => {
-        console.log('Server has responded', randomId);
-        blockId = randomId;
+    socket.emit('virusPosition', (response) => {
+        console.log('Server has responded', response);
+        blockId = response.blockId;
     });
 
     let randomBlock = document.querySelector(`[data-id='${blockId}']`);
@@ -70,15 +71,18 @@ function generateVirus() {
     if (randomBlock !== null) {
         randomBlock.appendChild(imageEl);
     };
+    timeWhenAppeared = Date.now();
+    // Lägga in i timeWhenAppeared i usersobjektet så att det finns där och blir åtkomligt vid uträkning av poäng?
 };
 
 gridArea.addEventListener('click', e => {
     if (e.target.tagName === 'IMG') {
         console.log("You clicked on the virus!")
-        const timeClicked = Date.now();
-        console.log(timeClicked);
         imageEl.remove();
-        socket.emit('timeWhenClicked', {timeClicked, username, room});
+        const timeClicked = Date.now();
+        const timeDifference = timeClicked - timeWhenAppeared;
+        console.log(timeDifference);
+        socket.emit('timeWhenClicked', {timeDifference, room});
     };
 });
 

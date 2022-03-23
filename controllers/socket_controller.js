@@ -84,9 +84,12 @@ const handleJoinGameVer2 = async function (username) {
         rooms[nextRoomId] = {
             id: `game${nextRoomId}`,
             name: `Game ${nextRoomId}`,
+            reaction: null,
             users: {
             },
             rounds: 0,
+            usersScore: {
+            },
         };
         // Save user in room
         rooms[nextRoomId].users[this.id] = username;
@@ -124,7 +127,7 @@ const handleJoinGameVer2 = async function (username) {
         // Client listens to this emit, some function runs and the game starts
         debug("The id of the room created: " + nextRoomId)
         const roomId = _game_room.id;
-        io.in(_game_room.id).emit('gameFound', {blockId, roomId});
+        io.in(_game_room.id).emit('gameFound', { blockId, roomId });
     };
 }
 
@@ -134,13 +137,17 @@ const virusPosition = function (callback) {
 };
 
 const handleScore = function (response) {
-// 1. Check the socket ID of the incoming timestamps?
-// 2. when two have been recieved from the same room calculate the score?
-// 3. Tell the client to render the next virus?    
-const timeClicked = response.timeClicked;
-const roomId = response.room;
-const username = response.username;
-debug(`TimeClicked: ${timeClicked}, Room ID: ${roomId}, Username: ${username}`);
+    // 1. Check the socket ID of the incoming timestamps?
+    // 2. when two have been recieved from the same room calculate the score?
+    // 3. Tell the client to render the next virus?    
+    const timeClicked = response.timeClicked;
+    const roomId = response.room;
+    console.log(roomId);
+    const room = rooms.find(room => {
+        const hasValue = Object.values(room).includes(roomId);
+        return hasValue;
+    });
+    console.log(room);
 };
 
 // Startade koden för scoreboarden, men behöver få fram reaktionstiden för att komma vidare så att spelarna kan få poäng
