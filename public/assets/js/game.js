@@ -60,11 +60,6 @@ function createGrids(grid) {
 };
 
 function generateVirus(id) {
-    imageEl = document.createElement('img');
-    imageEl.setAttribute('src', '/assets/icons/virus.png');
-    imageEl.classList.add('img-fluid')
-    console.log(imageEl);
-
     blockId = id;
 
     let time = Math.random();// -----
@@ -77,14 +72,8 @@ function generateVirus(id) {
         imageEl.classList.add('img-fluid')
         console.log(imageEl);
 
-        socket.emit('virusPosition', (randomId) => {
-            console.log('Server has responded', randomId);
-            blockId = randomId;
-        });
-
         let randomBlock = document.querySelector(`[data-id='${blockId}']`);
         console.log("The randomised block: " + randomBlock)
-
 
         if (randomBlock !== null) {
             randomBlock.appendChild(imageEl);
@@ -100,7 +89,7 @@ gridArea.addEventListener('click', e => {
         console.log("You clicked on the virus!")
         imageEl.remove();
         const timeClicked = Date.now();
-        const timeDifference = timeClicked - timeWhenAppeared;
+        const timeDifference = timeClicked - createTime;
         console.log(timeDifference);
         reactionTime=(timeClicked-createTime)/1000; //<
         //console.log('timeClicked, reactionTime ',timeClicked, reactionTime);
@@ -128,20 +117,7 @@ findGameBtn1.addEventListener('click', e => {
     gameStartInfoEl.innerText = "Waiting for another player...";
 });
 
-// // Temporary event listener for joining room 2/game-room 2
-// findGameBtn2.addEventListener('click', e => {
-//     e.preventDefault();
-//     socket.emit('joinGame', findGameBtn2.id, username)
-//     const gameStartInfoEl = document.querySelector('#game-start-info');
-//     gameStartInfoEl.innerText = "Waiting for another player...";
-// });
 
-// // Temporary event listener for joining room 3/game-room 3
-// findGameBtn3.addEventListener('click', e => {
-//     e.preventDefault();
-//     socket.emit('joinGame', findGameBtn3.id, username);
-//     gameStartInfoEl.innerText = "Waiting for another player...";
-// });
 
 // ----- socket --------
 socket.on('user:disconnected', (username) => {
@@ -178,4 +154,4 @@ socket.on('gameOver', () => {
 
 socket.on('update-scoreboard', scoreboard);
 
-socket.on('timeWhenClicked', timeClicked);
+// socket.on('timeWhenClicked', timeClicked);
