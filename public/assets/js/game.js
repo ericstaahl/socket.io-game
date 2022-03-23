@@ -17,6 +17,9 @@ let room = null;
 let username = null;
 let blockId;
 let numberOfRounds = 0;
+let createTime;
+let reactionTime;
+
 
 startForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -57,23 +60,33 @@ function createGrids(grid) {
 };
 
 function generateVirus() {
-    imageEl = document.createElement('img');
-    imageEl.setAttribute('src', '/assets/icons/virus.png');
-    imageEl.classList.add('img-fluid')
-    console.log(imageEl);
 
-    socket.emit('virusPosition', (randomId) => {
-        console.log('Server has responded', randomId);
-        blockId = randomId;
-    });
+    let time = Math.random();// -----
+    time = time * 5000; // -----
 
-    let randomBlock = document.querySelector(`[data-id='${blockId}']`);
-    console.log("The randomised block: " + randomBlock)
+    setTimeout(function() { // -----
+
+        imageEl = document.createElement('img');
+        imageEl.setAttribute('src', '/assets/icons/virus.png');
+        imageEl.classList.add('img-fluid')
+        console.log(imageEl);
+
+        socket.emit('virusPosition', (randomId) => {
+            console.log('Server has responded', randomId);
+            blockId = randomId;
+        });
+
+        let randomBlock = document.querySelector(`[data-id='${blockId}']`);
+        console.log("The randomised block: " + randomBlock)
 
 
-    if (randomBlock !== null) {
-        randomBlock.appendChild(imageEl);
-    };
+        if (randomBlock !== null) {
+            randomBlock.appendChild(imageEl);
+        };
+
+    createTime = Date.now(); // -----
+    
+    },time); // -----
 };
 
 gridArea.addEventListener('click', e => {
@@ -82,36 +95,19 @@ gridArea.addEventListener('click', e => {
         numberOfRounds ++;
         console.log('numberOfRounds ',numberOfRounds);
         const timeClicked = Date.now();
-        console.log(timeClicked);
-        socket.emit('timeWhenClicked', timeClicked);
+        console.log('timeClicked: ',timeClicked);
+        socket.emit('timeWhenClicked; ', timeClicked);
         imageEl.remove();
         if (numberOfRounds <= 10) {
             generateVirus();
         }
+
     };
 });
 
-// ----timer-----
-const start = false;
-const startTime = 0;
-const clickedTime = new Date();
-const delay = 1000 - clickedTime;
-
-setTimeout(function(){
-    intervalID = setInterval(function(){
-        myTime = new Date().getTime();
-        console.log(myTime);
-        if (start = true && startTime <= myTime) {
-            startCountdown();
-        }
-    }, 100); //put 1000 to check every second if second is round 
-             //or put 100 or 200 is second is not round
-}, delay);
 
 
-function startCountdown(){
-    //time countdown
-}
+
 
 //------- rooms ----------
 findGameBtn1.addEventListener('click', e => {
@@ -167,8 +163,5 @@ socket.on('update-scoreboard', scoreboard);
 
 socket.on('timeWhenClicked', timeClicked);
 
-// timer
-socket.on('data loaded', data =>{        
-    startTime = data.time;
-    start = true;
-});
+
+
