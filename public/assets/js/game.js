@@ -8,13 +8,21 @@ const nameTakenEl = document.querySelector('#name-taken')
 let imageEl;
 //temporary query selectors for joining these rooms/gamerooms
 const findGameBtn1 = document.querySelector('#game1');
+// const findGameBtn2 = document.querySelector('#game2');
+// const findGameBtn3 = document.querySelector('#game3');
 const gameStartInfoEl = document.querySelector('#game-start-info');
+const timerEl = document.querySelector('#timer');
 
 let room = null;
 let username = null;
 let blockId;
 let numberOfRounds = 0;
+
 let timeWhenAppeared;
+
+let createTime;
+let reactionTime;
+let timeClicked;
 
 startForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -59,14 +67,32 @@ function generateVirus(id) {
 
     blockId = id;
 
-    let randomBlock = document.querySelector(`[data-id='${blockId}']`);
-    console.log("The randomised block: " + randomBlock)
+    let time = Math.random();// -----
+    time = time * 5000; // -----
+
+    setTimeout(function() { // -----
+
+        imageEl = document.createElement('img');
+        imageEl.setAttribute('src', '/assets/icons/virus.png');
+        imageEl.classList.add('img-fluid')
+        console.log(imageEl);
+
+        socket.emit('virusPosition', (randomId) => {
+            console.log('Server has responded', randomId);
+            blockId = randomId;
+        });
+
+        let randomBlock = document.querySelector(`[data-id='${blockId}']`);
+        console.log("The randomised block: " + randomBlock)
 
 
-    if (randomBlock !== null) {
-        randomBlock.appendChild(imageEl);
-    };
-    timeWhenAppeared = Date.now();
+        if (randomBlock !== null) {
+            randomBlock.appendChild(imageEl);
+        };
+
+    createTime = Date.now(); // -----
+    
+    },time); // -----
 };
 
 gridArea.addEventListener('click', e => {
@@ -76,6 +102,9 @@ gridArea.addEventListener('click', e => {
         const timeClicked = Date.now();
         const timeDifference = timeClicked - timeWhenAppeared;
         console.log(timeDifference);
+        reactionTime=(timeClicked-createTime)/1000; //<
+        //console.log('timeClicked, reactionTime ',timeClicked, reactionTime);
+        timerEl.innerHTML = `${reactionTime}`;
         socket.emit('timeWhenClicked', { timeDifference, room });
     };
 });
@@ -88,6 +117,9 @@ const scoreboard = ({ winnerId, score }) => {
     }
 }
 
+
+
+
 //------- rooms ----------
 findGameBtn1.addEventListener('click', e => {
     e.preventDefault();
@@ -95,6 +127,21 @@ findGameBtn1.addEventListener('click', e => {
     const gameStartInfoEl = document.querySelector('#game-start-info');
     gameStartInfoEl.innerText = "Waiting for another player...";
 });
+
+// // Temporary event listener for joining room 2/game-room 2
+// findGameBtn2.addEventListener('click', e => {
+//     e.preventDefault();
+//     socket.emit('joinGame', findGameBtn2.id, username)
+//     const gameStartInfoEl = document.querySelector('#game-start-info');
+//     gameStartInfoEl.innerText = "Waiting for another player...";
+// });
+
+// // Temporary event listener for joining room 3/game-room 3
+// findGameBtn3.addEventListener('click', e => {
+//     e.preventDefault();
+//     socket.emit('joinGame', findGameBtn3.id, username);
+//     gameStartInfoEl.innerText = "Waiting for another player...";
+// });
 
 // ----- socket --------
 socket.on('user:disconnected', (username) => {
@@ -128,3 +175,7 @@ socket.on('newVirus', blockId => {
 socket.on('gameOver', () => {
     console.log('The game is over.')
 })
+
+socket.on('update-scoreboard', scoreboard);
+
+socket.on('timeWhenClicked', timeClicked);
