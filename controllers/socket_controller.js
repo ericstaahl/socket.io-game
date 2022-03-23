@@ -95,6 +95,8 @@ const handleJoinGameVer2 = async function (username) {
         // Save user in room
         rooms[nextRoomId].users[this.id] = username;
         _game_room = rooms[nextRoomId];
+        // Initialise user score
+        rooms[nextRoomId].usersScore[this.id] = 0;
         // Add 1 to nextRoomId so that the next created room's id is unique
         nextRoomId++;
     } else {
@@ -146,13 +148,13 @@ const handleScore = function (response) {
         const hasValue = Object.values(room).includes(roomId);
         return hasValue;
     });
+    let gameIsFinished = false;
     // If the variable is null, assign it the socket id of a player
     // Will be the first player to respond.
     if (!room.userWithBestTime) {
         room.userWithBestTime = this.id;
-    }
+    };
     debug(`Current user with best time is: ${room.userWithBestTime}`);
-    room.usersScore[this.id] = 0;
     // If the reaction time from the first player has been saved, check how it compares to the last user's time and
     // give score to the user with the best time.
     if (room.reaction) {
@@ -171,14 +173,9 @@ const handleScore = function (response) {
             // room.reaction = null
         };
         room.rounds++;
+        gameIsFinished = true;
         debug(`Number of rounds: ${room.rounds}`)
-        if (room.rounds < 10) {
-            room.userWithBestTime = null;
-            room.reaction = null
-            const blockId = virusPosition();
-            io.in(room.id).emit('newVirus', blockId);
-            return;
-        };
+        
     };
     // If no reaction-time has been saved, save the user's time here (this will be the case of the first client to respond to the server)
     if (!room.reaction) {
@@ -187,6 +184,15 @@ const handleScore = function (response) {
     // debug(`Reaction variable after response from one the clients: ${room.reaction}`);
     // debug(`Current user with best time is: ${room.userWithBestTime}`);
     debug(`The respective user's : score: ${JSON.stringify(room.usersScore)}`);
+    if (gameIsFinished === true) {
+        if (room.rounds < 10) {
+            gameIsFinished = false;
+            room.userWithBestTime = null;
+            room.reaction = null
+            const blockId = virusPosition();
+            io.in(room.id).emit('newVirus', blockId);
+        };
+    }
 };
 
 // Startade koden för scoreboarden, men behöver få fram reaktionstiden för att komma vidare så att spelarna kan få poäng
