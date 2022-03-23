@@ -138,36 +138,49 @@ const virusPosition = function (callback) {
 };
 
 const handleScore = function (response) {
-    // 1. Check the socket ID of the incoming timestamps?
-    // 2. when two have been recieved from the same room calculate the score?
-    // 3. Tell the client to render the next virus?  
+    // Get values from client-side response
     const timeClicked = response.timeDifference;
     const roomId = response.room;
+    // Find the room the users are in
     const room = rooms.find(room => {
         const hasValue = Object.values(room).includes(roomId);
         return hasValue;
     });
+    // If the variable is null, give it the socket id of a player
+    // Will be the first player to respond.
+    // Potential bug when looped?
     if (!room.userWithBestTime) {
         room.userWithBestTime = this.id;
     }
     debug(`Current user with best time is: ${room.userWithBestTime}`);
     room.usersScore[this.id] = 0;
-    if (room.reaction !== null) {
+    // If the reaction time from the first player has been saved, check how it compares to the last user's time and
+    // give score to the user with the best time.
+    if (room.reaction) {
         if (room.reaction > timeClicked) {
             room.reaction = timeClicked;
             room.userWithBestTime = this.id;
             room.usersScore[room.userWithBestTime]++;
+            // Reset the room object's properties
+            room.userWithBestTime = null;
+            room.reaction = null
+            //else add the score 
         } else {
             room.usersScore[room.userWithBestTime]++;
+            // Reset the room object's properties
+            room.userWithBestTime = null;
+            room.reaction = null
         };
         room.rounds++;
     };
-    if (room.reaction === null) {
+    // If no reaction-time has been saved, save the user's time here (this will be the case of the first client to respond to the server)
+    if (!room.reaction) {
         room.reaction = timeClicked;
     };
     debug(`Reaction variable after response from one the clients: ${room.reaction}`);
     debug(`Current user with best time is: ${room.userWithBestTime}`);
     debug(`The respective user's : score: ${JSON.stringify(room.usersScore)}`);
+
 };
 
 // Startade koden för scoreboarden, men behöver få fram reaktionstiden för att komma vidare så att spelarna kan få poäng
