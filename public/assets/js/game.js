@@ -94,8 +94,8 @@ gridArea.addEventListener('click', e => {
 // ----timer-----
 const start = false;
 const startTime = 0;
-const myTime = new Date().getMilliseconds();
-const delay = 1000 - myTime;
+const clickedTime = new Date();
+const delay = 1000 - clickedTime;
 
 setTimeout(function(){
     intervalID = setInterval(function(){
