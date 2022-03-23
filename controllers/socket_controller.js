@@ -128,19 +128,7 @@ const handleJoinGameVer2 = async function (username) {
 const virusPosition = function (callback) {
     const blockId = Math.floor(Math.random() * 64);
     callback(blockId);
-
-// Startade koden för scoreboarden, men behöver få fram reaktionstiden för att komma vidare så att spelarna kan få poäng
-}/*
-const getScoreboard = (user, opponent) => {
-	if (user.reactionTime < opponent.reactionTime) {
-		user.score++;
-		return { winnerId: user.id, score: user.score };
-	} else {
-		opponent.score++;
-		return { winnerId: opponent.id, score: opponent.score };
-	}
 }
-*/
 
 module.exports = function (socket, _io) {
     io = _io;
