@@ -19,7 +19,7 @@ let blockId;
 let numberOfRounds = 0;
 let createTime;
 let reactionTime;
-
+let timeClicked;
 
 startForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -94,7 +94,7 @@ gridArea.addEventListener('click', e => {
         console.log("You clicked on the virus!")
         numberOfRounds ++;
         console.log('numberOfRounds ',numberOfRounds);
-        const timeClicked = Date.now();
+        timeClicked = Date.now();
         console.log('timeClicked: ',timeClicked);
         socket.emit('timeWhenClicked; ', timeClicked);
         imageEl.remove();
