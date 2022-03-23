@@ -124,17 +124,17 @@ const handleJoinGameVer2 = async function (username) {
 
     if (Object.keys(_game_room.users).length === 2) {
         // Randomise virus position
-        const blockId = Math.floor(Math.random() * 64);
+        const blockId = virusPosition();
         // Client listens to this emit, some function runs and the game starts
         debug("The id of the room created: " + nextRoomId)
         const roomId = _game_room.id;
         io.in(_game_room.id).emit('gameFound', { blockId, roomId });
     };
-}
+};
 
-const virusPosition = function (callback) {
+const virusPosition = function () {
     const blockId = Math.floor(Math.random() * 64);
-    callback(blockId);
+    return blockId;
 };
 
 const handleScore = function (response) {
@@ -146,9 +146,8 @@ const handleScore = function (response) {
         const hasValue = Object.values(room).includes(roomId);
         return hasValue;
     });
-    // If the variable is null, give it the socket id of a player
+    // If the variable is null, assign it the socket id of a player
     // Will be the first player to respond.
-    // Potential bug when looped?
     if (!room.userWithBestTime) {
         room.userWithBestTime = this.id;
     }
@@ -161,26 +160,33 @@ const handleScore = function (response) {
             room.reaction = timeClicked;
             room.userWithBestTime = this.id;
             room.usersScore[room.userWithBestTime]++;
-            // Reset the room object's properties
-            room.userWithBestTime = null;
-            room.reaction = null
+            // // Reset the room object's properties
+            // room.userWithBestTime = null;
+            // room.reaction = null;
             //else add the score 
         } else {
             room.usersScore[room.userWithBestTime]++;
-            // Reset the room object's properties
-            room.userWithBestTime = null;
-            room.reaction = null
+            // // Reset the room object's properties
+            // room.userWithBestTime = null;
+            // room.reaction = null
         };
         room.rounds++;
+        debug(`Number of rounds: ${room.rounds}`)
+        if (room.rounds < 10) {
+            room.userWithBestTime = null;
+            room.reaction = null
+            const blockId = virusPosition();
+            io.in(room.id).emit('newVirus', blockId);
+            return;
+        };
     };
     // If no reaction-time has been saved, save the user's time here (this will be the case of the first client to respond to the server)
     if (!room.reaction) {
         room.reaction = timeClicked;
     };
-    debug(`Reaction variable after response from one the clients: ${room.reaction}`);
-    debug(`Current user with best time is: ${room.userWithBestTime}`);
+    // debug(`Reaction variable after response from one the clients: ${room.reaction}`);
+    // debug(`Current user with best time is: ${room.userWithBestTime}`);
     debug(`The respective user's : score: ${JSON.stringify(room.usersScore)}`);
-
 };
 
 // Startade koden för scoreboarden, men behöver få fram reaktionstiden för att komma vidare så att spelarna kan få poäng
@@ -205,7 +211,7 @@ module.exports = function (socket, _io) {
 
     socket.on('joinGame', handleJoinGameVer2);
 
-    socket.on('virusPosition', virusPosition);
+    // socket.on('virusPosition', virusPosition);
 
     socket.on('timeWhenClicked', handleScore);
 };

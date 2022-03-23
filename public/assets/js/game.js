@@ -50,19 +50,20 @@ function createGrids(grid) {
         // Fäst divarna i spelområdet
         grid.appendChild(block);
     }
-    generateVirus();
+    generateVirus(blockId);
 };
 
-function generateVirus() {
+function generateVirus(id) {
     imageEl = document.createElement('img');
     imageEl.setAttribute('src', '/assets/icons/virus.png');
     imageEl.classList.add('img-fluid')
     console.log(imageEl);
 
-    socket.emit('virusPosition', (response) => {
-        console.log('Server has responded', response);
-        blockId = response.blockId;
-    });
+    // socket.on('virusPosition', (response) => {
+    //     blockId = response.blockId;
+    // });
+
+    blockId = id;
 
     let randomBlock = document.querySelector(`[data-id='${blockId}']`);
     console.log("The randomised block: " + randomBlock)
@@ -82,10 +83,9 @@ gridArea.addEventListener('click', e => {
         const timeClicked = Date.now();
         const timeDifference = timeClicked - timeWhenAppeared;
         console.log(timeDifference);
-        socket.emit('timeWhenClicked', {timeDifference, room});
+        socket.emit('timeWhenClicked', { timeDifference, room });
     };
 });
-
 
 const scoreboard = ({ winnerId, score }) => {
     if (winnerId === username) {
@@ -126,9 +126,13 @@ socket.on('gameFound', (ids) => {
     createGrids(gridArea);
 });
 
-socket.emit('virusPosition', (randomId) => {
-    console.log('Server has responded', randomId);
-    blockId = randomId;
-})
+// socket.emit('virusPosition', (randomId) => {
+//     console.log('Server has responded', randomId);
+//     blockId = randomId;
+// })
 
 socket.on('update-scoreboard', scoreboard);
+
+socket.on('newVirus', blockId => {
+    generateVirus(blockId);
+});
