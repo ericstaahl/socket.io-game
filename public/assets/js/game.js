@@ -95,7 +95,9 @@ gridArea.addEventListener('click', e => {
         numberOfRounds ++;
         console.log('numberOfRounds ',numberOfRounds);
         timeClicked = Date.now();
-        console.log('timeClicked: ',timeClicked);
+        reactionTime=(timeClicked-createTime)/1000; //<
+        //console.log('timeClicked, reactionTime ',timeClicked, reactionTime);
+        timerEl.innerHTML = `${reactionTime}`;
         socket.emit('timeWhenClicked; ', timeClicked);
         imageEl.remove();
         if (numberOfRounds <= 10) {
