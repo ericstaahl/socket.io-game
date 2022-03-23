@@ -23,6 +23,10 @@
     flex-direction: row;
 }
 
+.title { 
+    font-family: 'Orbitron', sans-serif;
+    color: white;
+}
 /* start page */
 
 .title {
