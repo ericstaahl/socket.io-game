@@ -105,6 +105,13 @@ gridArea.addEventListener('click', e => {
     };
 });
 
+const scoreboard = ({ winnerId, score }) => {
+    if (winnerId === username) {
+        setInnerHTML('#player-score', score);
+    } else {
+        setInnerHTML('#opponent-score', score);
+    }
+}
 
 
 
