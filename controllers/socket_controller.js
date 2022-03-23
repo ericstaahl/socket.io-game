@@ -139,15 +139,35 @@ const virusPosition = function (callback) {
 const handleScore = function (response) {
     // 1. Check the socket ID of the incoming timestamps?
     // 2. when two have been recieved from the same room calculate the score?
-    // 3. Tell the client to render the next virus?    
-    const timeClicked = response.timeClicked;
+    // 3. Tell the client to render the next virus?  
+    const timeClicked = response.timeDifference;
+    let userWithBestTime;
+    if (!userWithBestTime) {
+        userWithBestTime = this.id;
+    }
+    debug(`Current user with best time is: ${userWithBestTime}`);
     const roomId = response.room;
-    console.log(roomId);
     const room = rooms.find(room => {
         const hasValue = Object.values(room).includes(roomId);
         return hasValue;
     });
-    console.log(room);
+    room.usersScore[this.id] = 0;
+    if (room.reaction === null) {
+        room.reaction = timeClicked;
+    };
+    if (room.reaction !== null) {
+        if (room.reaction > timeClicked) {
+            room.reaction = timeClicked;
+            userWithBestTime = this.id;
+            room.usersScore[userWithBestTime]++;
+        } else {
+            room.usersScore[userWithBestTime]++;
+        };
+        room.rounds++;
+    }
+    debug(`Reaction variable after response from one the clients: ${room.reaction}`);
+    debug(`Current user with best time is: ${userWithBestTime}`);
+    debug(room.usersScore);
 };
 
 // Startade koden för scoreboarden, men behöver få fram reaktionstiden för att komma vidare så att spelarna kan få poäng
