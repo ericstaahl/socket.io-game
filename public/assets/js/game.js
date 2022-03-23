@@ -136,3 +136,7 @@ socket.on('update-scoreboard', scoreboard);
 socket.on('newVirus', blockId => {
     generateVirus(blockId);
 });
+
+socket.on('gameOver', () => {
+    console.log('The game is over.')
+})

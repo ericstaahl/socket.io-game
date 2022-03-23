@@ -108,6 +108,8 @@ const handleJoinGameVer2 = async function (username) {
             // Add a user to a room if it's not full, and then break out of the loop
             if (Object.keys(game_room.users).length < 2) {
                 this.join(game_room.id)
+                // Initialise user score
+                game_room.usersScore[this.id] = 0;
                 // add the users socket id to the rooms 'users' object
                 game_room.users[this.id] = username;
                 rooms.forEach(room => {
@@ -148,7 +150,7 @@ const handleScore = function (response) {
         const hasValue = Object.values(room).includes(roomId);
         return hasValue;
     });
-    let gameIsFinished = false;
+    let roundIsFinished = false;
     // If the variable is null, assign it the socket id of a player
     // Will be the first player to respond.
     if (!room.userWithBestTime) {
@@ -162,20 +164,15 @@ const handleScore = function (response) {
             room.reaction = timeClicked;
             room.userWithBestTime = this.id;
             room.usersScore[room.userWithBestTime]++;
-            // // Reset the room object's properties
-            // room.userWithBestTime = null;
-            // room.reaction = null;
+
             //else add the score 
         } else {
             room.usersScore[room.userWithBestTime]++;
-            // // Reset the room object's properties
-            // room.userWithBestTime = null;
-            // room.reaction = null
         };
         room.rounds++;
-        gameIsFinished = true;
+        roundIsFinished = true;
         debug(`Number of rounds: ${room.rounds}`)
-        
+
     };
     // If no reaction-time has been saved, save the user's time here (this will be the case of the first client to respond to the server)
     if (!room.reaction) {
@@ -184,14 +181,17 @@ const handleScore = function (response) {
     // debug(`Reaction variable after response from one the clients: ${room.reaction}`);
     // debug(`Current user with best time is: ${room.userWithBestTime}`);
     debug(`The respective user's : score: ${JSON.stringify(room.usersScore)}`);
-    if (gameIsFinished === true) {
+    if (roundIsFinished === true) {
         if (room.rounds < 10) {
-            gameIsFinished = false;
+            roundIsFinished = false;
+            // // Reset the room object's properties
             room.userWithBestTime = null;
             room.reaction = null
             const blockId = virusPosition();
             io.in(room.id).emit('newVirus', blockId);
-        };
+        } else {
+            io.in(room.id).emit('gameOver');
+        }
     }
 };
 
