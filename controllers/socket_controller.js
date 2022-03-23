@@ -178,8 +178,6 @@ const handleScore = function (response) {
     if (!room.reaction) {
         room.reaction = timeClicked;
     };
-    // debug(`Reaction variable after response from one the clients: ${room.reaction}`);
-    // debug(`Current user with best time is: ${room.userWithBestTime}`);
     debug(`The respective user's : score: ${JSON.stringify(room.usersScore)}`);
     if (roundIsFinished === true) {
         if (room.rounds < 10) {
@@ -216,8 +214,6 @@ module.exports = function (socket, _io) {
     socket.on('user:joined', handleUserJoined);
 
     socket.on('joinGame', handleJoinGameVer2);
-
-    // socket.on('virusPosition', virusPosition);
 
     socket.on('timeWhenClicked', handleScore);
 };
