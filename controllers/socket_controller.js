@@ -85,6 +85,7 @@ const handleJoinGameVer2 = async function (username) {
             id: `game${nextRoomId}`,
             name: `Game ${nextRoomId}`,
             reaction: null,
+            userWithBestTime: null,
             users: {
             },
             rounds: 0,
@@ -141,33 +142,32 @@ const handleScore = function (response) {
     // 2. when two have been recieved from the same room calculate the score?
     // 3. Tell the client to render the next virus?  
     const timeClicked = response.timeDifference;
-    let userWithBestTime;
-    if (!userWithBestTime) {
-        userWithBestTime = this.id;
-    }
-    debug(`Current user with best time is: ${userWithBestTime}`);
     const roomId = response.room;
     const room = rooms.find(room => {
         const hasValue = Object.values(room).includes(roomId);
         return hasValue;
     });
+    if (!room.userWithBestTime) {
+        room.userWithBestTime = this.id;
+    }
+    debug(`Current user with best time is: ${room.userWithBestTime}`);
     room.usersScore[this.id] = 0;
-    if (room.reaction === null) {
-        room.reaction = timeClicked;
-    };
     if (room.reaction !== null) {
         if (room.reaction > timeClicked) {
             room.reaction = timeClicked;
-            userWithBestTime = this.id;
-            room.usersScore[userWithBestTime]++;
+            room.userWithBestTime = this.id;
+            room.usersScore[room.userWithBestTime]++;
         } else {
-            room.usersScore[userWithBestTime]++;
+            room.usersScore[room.userWithBestTime]++;
         };
         room.rounds++;
-    }
+    };
+    if (room.reaction === null) {
+        room.reaction = timeClicked;
+    };
     debug(`Reaction variable after response from one the clients: ${room.reaction}`);
-    debug(`Current user with best time is: ${userWithBestTime}`);
-    debug(room.usersScore);
+    debug(`Current user with best time is: ${room.userWithBestTime}`);
+    debug(`The respective user's : score: ${JSON.stringify(room.usersScore)}`);
 };
 
 // Startade koden för scoreboarden, men behöver få fram reaktionstiden för att komma vidare så att spelarna kan få poäng
