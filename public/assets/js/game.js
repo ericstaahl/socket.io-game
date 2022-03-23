@@ -29,8 +29,6 @@ startForm.addEventListener('submit', e => {
         if (status.success === true) {
             startEl.classList.add('hide');
             gameEl.classList.remove('hide');
-            // createGrids(gridArea);
-            //spawnVirus();
         }
     });
 });
@@ -59,10 +57,6 @@ function generateVirus(id) {
     imageEl.classList.add('img-fluid')
     console.log(imageEl);
 
-    // socket.on('virusPosition', (response) => {
-    //     blockId = response.blockId;
-    // });
-
     blockId = id;
 
     let randomBlock = document.querySelector(`[data-id='${blockId}']`);
@@ -73,7 +67,6 @@ function generateVirus(id) {
         randomBlock.appendChild(imageEl);
     };
     timeWhenAppeared = Date.now();
-    // Lägga in i timeWhenAppeared i usersobjektet så att det finns där och blir åtkomligt vid uträkning av poäng?
 };
 
 gridArea.addEventListener('click', e => {
@@ -125,11 +118,6 @@ socket.on('gameFound', (ids) => {
     gameStartInfoEl.innerText = "A game has been found!";
     createGrids(gridArea);
 });
-
-// socket.emit('virusPosition', (randomId) => {
-//     console.log('Server has responded', randomId);
-//     blockId = randomId;
-// })
 
 socket.on('update-scoreboard', scoreboard);
 
