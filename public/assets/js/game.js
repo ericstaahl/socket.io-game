@@ -12,6 +12,7 @@ const findGameBtn1 = document.querySelector('#game1');
 // const findGameBtn3 = document.querySelector('#game3');
 const gameStartInfoEl = document.querySelector('#game-start-info');
 const timerEl = document.querySelector('#timer');
+const resultEl= document.querySelector('#result-wrapper');
 
 let room = null;
 let username = null;
@@ -63,7 +64,7 @@ function generateVirus(id) {
     blockId = id;
 
     let time = Math.random();// -----
-    time = time * 5000; // -----
+    time = time * 3000; // -----
 
     setTimeout(function() { // -----
 
@@ -86,12 +87,14 @@ function generateVirus(id) {
 
 gridArea.addEventListener('click', e => {
     if (e.target.tagName === 'IMG') {
+        numberOfRounds++; // count games up to 10
+        console.log('Round: ',numberOfRounds); // check how many rounds
         console.log("You clicked on the virus!")
         imageEl.remove();
         const timeClicked = Date.now();
         const timeDifference = timeClicked - createTime;
         console.log(timeDifference);
-        reactionTime=(timeClicked-createTime)/1000; //<
+        reactionTime=(timeClicked-createTime)/1000; 
         //console.log('timeClicked, reactionTime ',timeClicked, reactionTime);
 
         socket.emit('timeWhenClicked', { timeDifference, room });
@@ -102,16 +105,8 @@ gridArea.addEventListener('click', e => {
         if (numberOfRounds < 10) {
             generateVirus();
         } else if (numberOfRounds === 10) { // After 10 games: Continue/Exit, Results Screen
-            gameEl.innerHTML = ``;
-            gameEl.innerHTML =
-            `<div id="result-wrapper" class="flex columns justify-content: center;">
-                <div id="result" >
-                    <h2 class="title"> 0 : 0 </h2>
-                    <button class="btn btn-primary mx-2">continue</button>
-                    <button class="btn btn-primary mx-2">quit</button>
-                </div>
-            </div>
-            `
+            gameEl.classList.add('hide');
+            resultEl.classList.remove('hide');           
         }
 
     };
@@ -125,8 +120,17 @@ const scoreboard = ({ winnerId, score }) => {
     }
 }
 
+// TODO reset previous game and find a room
+document.querySelector('#continue').addEventListener('click',e => {  
+    resultEl.classList.add('hide');
+    gameEl.classList.remove('hide');
+});
 
-
+// TODO reset previous game
+document.querySelector('#quit').addEventListener('click',e => { 
+    resultEl.classList.add('hide');
+    startEl.classList.remove('hide');
+});
 
 //------- rooms ----------
 findGameBtn1.addEventListener('click', e => {
@@ -167,9 +171,9 @@ socket.on('newVirus', blockId => {
     generateVirus(blockId);
 });
 
-socket.on('gameOver', () => {
-    console.log('The game is over.')
-})
+// socket.on('gameOver', () => {
+//     console.log('The game is over.')
+// })
 
 socket.on('update-scoreboard', scoreboard);
 
