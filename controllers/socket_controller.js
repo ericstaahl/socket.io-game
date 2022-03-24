@@ -1,4 +1,5 @@
 const { handle } = require('express/lib/application');
+const res = require('express/lib/response');
 
 /**
  * Socket Controller
@@ -6,7 +7,7 @@ const { handle } = require('express/lib/application');
 const debug = require('debug')('game:socket_controller');
 // Object containing all users
 const users = {};
-const rooms = [
+let rooms = [
 ]
 let nextRoomId = 0;
 
@@ -101,13 +102,13 @@ const handleJoinGameVer2 = async function (username) {
         nextRoomId++;
     } else {
         // otherwise check how many users the rooms in the array have
-        for (let i = 0; i < rooms.length; i++) {
-            const game_room = rooms[i];
+        rooms.some(room => {
+            const game_room = room;
             _game_room = game_room;
             debug("Current game-room: " + _game_room.id)
             // Add a user to a room if it's not full, and then break out of the loop
             if (Object.keys(game_room.users).length < 2) {
-                this.join(game_room.id)
+                this.join(game_room.id);
                 // Initialise user score
                 game_room.usersScore[this.id] = 0;
                 // add the users socket id to the rooms 'users' object
@@ -115,14 +116,14 @@ const handleJoinGameVer2 = async function (username) {
                 rooms.forEach(room => {
                     debug(room);
                 });
-                break;
+                // break;
             } else {
                 debug("This room/game already has two players.")
                 rooms.forEach(room => {
                     debug(room);
                 });
             };
-        };
+        }); 
         debug("All rooms: " + rooms)
     };
 
@@ -143,13 +144,20 @@ const virusPosition = function () {
 
 const handleScore = function (response) {
     // Get values from client-side response
+    console.log(response);
     const timeClicked = response.timeDifference;
     const roomId = response.room;
+    debug("Response from the client during handle-score: " + roomId);
     // Find the room the users are in
     const room = rooms.find(room => {
-        const hasValue = Object.values(room).includes(roomId);
-        return hasValue;
+        if (room) {
+            console.dir(rooms)
+            debug(room);
+            const hasValue = Object.values(room).includes(roomId);
+            return hasValue;
+        };
     });
+
     let roundIsFinished = false;
     // If the variable is null, assign it the socket id of a player
     // Will be the first player to respond.
@@ -189,6 +197,13 @@ const handleScore = function (response) {
             io.in(room.id).emit('newVirus', blockId);
         } else {
             io.in(room.id).emit('gameOver');
+            const newRooms = rooms.filter(room => room === roomId);
+            rooms = newRooms;
+            console.log("The new rooms array: " + newRooms);
+            // debug(`Length of rooms array: ${rooms.length}`)
+            debug(rooms);
+            // Leave the room
+            this.leave(roomId);
         }
     }
 };
