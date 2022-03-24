@@ -161,6 +161,7 @@ const handleScore = function (response) {
     let roundIsFinished = false;
     // If the variable is null, assign it the socket id of a player
     // Will be the first player to respond.
+    debug("room before crash: " + room);
     if (!room.userWithBestTime) {
         room.userWithBestTime = this.id;
     };
@@ -223,9 +224,9 @@ const handleScore = function (response) {
                 io.in(room.id).emit('winnerName', winnerName);
             });
             io.in(room.id).emit('gameOver');
-            const newRooms = rooms.filter(room => room === roomId);
+            const newRooms = rooms.filter(room => room.id !== roomId);
             rooms = newRooms;
-            console.log("The new rooms array: " + newRooms);
+            console.log("The new rooms array: " + JSON.stringify(newRooms));
             // debug(`Length of rooms array: ${rooms.length}`)
             debug(rooms);
             // Leave the room
