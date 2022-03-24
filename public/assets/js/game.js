@@ -175,13 +175,15 @@ socket.on('gameOver', () => {
     console.log('The game is over.')
     numberOfRounds = 0;
     findGameBtn1.classList.remove('hide');
+    // Reset game area
+    gridArea.innerHTML = ""
 })
 
-socket.on('opponentLeft', () => {
-    console.log('You automatically won because your opponent disconnected during your game.')
-    numberOfRounds = 0;
-    findGameBtn1.classList.remove('hide');
-})
+// socket.on('opponentLeft', () => {
+//     console.log('You automatically won because your opponent disconnected during your game.')
+//     numberOfRounds = 0;
+//     findGameBtn1.classList.remove('hide');
+// });
 
 socket.on('update-scoreboard', scoreboard);
 
