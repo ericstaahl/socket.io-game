@@ -121,7 +121,8 @@ const scoreboard = ({ winnerId, score }) => {
 // TODO reset previous game and find a room
 document.querySelector('#continue').addEventListener('click',e => {  
     resultEl.classList.add('hide');
-    gameEl.classList.remove('hide');  
+    gameEl.classList.remove('hide');
+    gameStartInfoEl.innerText = "Press the button to start looking for a game!";
 });
 
 // TODO reset previous game
