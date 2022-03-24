@@ -123,7 +123,7 @@ const handleJoinGameVer2 = async function (username) {
                     debug(room);
                 });
             };
-        }); 
+        });
         debug("All rooms: " + rooms)
     };
 
@@ -205,6 +205,17 @@ const handleScore = function (response) {
             // Leave the room
             this.leave(roomId);
         }
+    }
+    //Handle user leaving during the game
+    if (Object.keys(room.users).length < 2) {
+        io.in(room.id).emit('opponentLeft');
+        const newRooms = rooms.filter(room => room === roomId);
+        rooms = newRooms;
+        console.log("The new rooms array: " + newRooms);
+        // debug(`Length of rooms array: ${rooms.length}`)
+        debug(rooms);
+        // Leave the room
+        this.leave(roomId);
     }
 };
 
