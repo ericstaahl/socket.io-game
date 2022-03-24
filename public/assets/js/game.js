@@ -25,6 +25,8 @@ let createTime;
 let reactionTime;
 let timeClicked;
 
+let delay;
+
 startForm.addEventListener('submit', e => {
     e.preventDefault();
     username = startForm.username.value;
@@ -62,10 +64,6 @@ function createGrids(grid) {
 
 function generateVirus(id) {
     blockId = id;
-
-    let time = Math.random();// -----
-    time = time * 3000; // -----
-
     setTimeout(function() { // -----
 
         imageEl = document.createElement('img');
@@ -82,7 +80,7 @@ function generateVirus(id) {
 
     createTime = Date.now(); // -----
     
-    },time); // -----
+    }, delay); // -----
 };
 
 gridArea.addEventListener('click', e => {
@@ -178,6 +176,10 @@ socket.on('gameOver', () => {
     // Reset game area
     gridArea.innerHTML = ""
 })
+
+socket.on('delay', randomDelay => {
+    delay = randomDelay;
+});
 
 // socket.on('opponentLeft', () => {
 //     console.log('You automatically won because your opponent disconnected during your game.')

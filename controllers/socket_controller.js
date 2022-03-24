@@ -194,6 +194,11 @@ const handleScore = function (response) {
             room.userWithBestTime = null;
             room.reaction = null
             const blockId = virusPosition();
+            // Send new delay to client
+            let randomDelay = Math.random();
+            randomDelay = randomDelay * 3000;
+            io.in(room.id).emit('delay', randomDelay);
+            // Tell client to render a new virus
             io.in(room.id).emit('newVirus', blockId);
         } else {
             io.in(room.id).emit('gameOver');
