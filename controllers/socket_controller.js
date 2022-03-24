@@ -202,14 +202,23 @@ const handleScore = function (response) {
             io.in(room.id).emit('newVirus', blockId);
         } else {
             let highestScore = 0;
+            let tie = false;
             Object.values(room.usersScore).forEach(score => {
+                if (score === highestScore) {
+                    tie = true;
+                };
                 if (score > highestScore) {
                     highestScore = score;
                 };
                 debug("The highest score: " + highestScore);
                 const winner = Object.keys(room.usersScore).find(key => room.usersScore[key] === highestScore);
                 debug("The winner is: " + winner);
-                const winnerName = users[winner];
+
+                let winnerName = users[winner];
+                if (tie) {
+                    winnerName = Object.values(users);
+                };
+
                 debug("The name of the winner is: " + winnerName);
                 io.in(room.id).emit('winnerName', winnerName);
             });
@@ -236,19 +245,6 @@ const handleScore = function (response) {
     //     this.leave(roomId);
     // }
 };
-
-// Startade koden för scoreboarden, men behöver få fram reaktionstiden för att komma vidare så att spelarna kan få poäng
-/*
-const getScoreboard = (user, opponent) => {
-    if (user.reactionTime < opponent.reactionTime) {
-        user.score++;
-        return { winnerId: user.id, score: user.score };
-    } else {
-        opponent.score++;
-        return { winnerId: opponent.id, score: opponent.score };
-    }
-}
-*/
 
 module.exports = function (socket, _io) {
     io = _io;
