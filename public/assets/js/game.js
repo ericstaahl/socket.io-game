@@ -102,9 +102,7 @@ gridArea.addEventListener('click', e => {
         timerEl.innerHTML = `Your Reaction Time is: ${reactionTime} seconds`;
         socket.emit('timeWhenClicked; ', timeClicked);
         imageEl.remove();
-        if (numberOfRounds < 10) {
-            generateVirus();
-        } else if (numberOfRounds === 10) { // After 10 games: Continue/Exit, Results Screen
+        if (numberOfRounds === 10) { // After 10 games: Continue/Exit, Results Screen
             gameEl.classList.add('hide');
             resultEl.classList.remove('hide');           
         }

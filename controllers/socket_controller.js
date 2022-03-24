@@ -157,7 +157,6 @@ const handleScore = function (response) {
             return hasValue;
         };
     });
-    // const room = rooms.find(room => room.id === roomId);
 
     let roundIsFinished = false;
     // If the variable is null, assign it the socket id of a player
@@ -189,7 +188,7 @@ const handleScore = function (response) {
     };
     debug(`The respective user's : score: ${JSON.stringify(room.usersScore)}`);
     if (roundIsFinished === true) {
-        if (room.rounds < 3) {
+        if (room.rounds < 10) {
             roundIsFinished = false;
             // // Reset the room object's properties
             room.userWithBestTime = null;
@@ -198,10 +197,6 @@ const handleScore = function (response) {
             io.in(room.id).emit('newVirus', blockId);
         } else {
             io.in(room.id).emit('gameOver');
-            // // Get the index of the room from rooms array
-            // let indexOfRoom = rooms.findIndex(room => room.id === roomId);
-            // debug(indexOfRoom);
-            // delete the room from the rooms array
             const newRooms = rooms.filter(room => room === roomId);
             rooms = newRooms;
             console.log("The new rooms array: " + newRooms);
