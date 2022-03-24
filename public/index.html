@@ -86,7 +86,7 @@
 
 
                         <footer class="card-footer">
-                            <p id="timer" class="card-footer-timer text-center">00:00:000</p>
+                            <p id="timer" class="card-footer-timer text-center"></p>
                         </footer>
 
                         <div class="m-auto">
@@ -99,6 +99,15 @@
                 </div> <!-- game_wrapper -->
             </div> 
         </section> <!-- game -->
+
+        <!-- result -->
+        <div id="result-wrapper" class="hide flex columns justify-content: center;">
+            <div id="result" >
+                <h2 class="title"> 0 : 0 </h2>
+                <button id="continue" class="btn btn-primary mx-2">continue</button>
+                <button id="quit" class="btn btn-primary mx-2">quit</button>
+            </div>
+        </div>
     </div>
 
     <!-- socket.io script -->

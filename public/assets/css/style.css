@@ -3,7 +3,7 @@
 #app,
 #start,
 #game {
-    height: 100vh;
+    height: 120vh;
     width: 100vw;
 }
 
@@ -88,4 +88,12 @@ div {
     /*position: absolute;*/
 }
 
+#result-wrapper {
+    height: 100vh;
+    width: 100vw;
+}
 
+#result {
+    margin: 0 auto;
+    text-align: center;
+}
