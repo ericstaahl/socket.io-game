@@ -44,6 +44,7 @@ const handleUserJoined = async function (username, callback) {
     };
 };
 
+//Now handled in the handleScore-function instead
 const handleDisconnect = async function () {
     //remove the user from the users object
     // debug('Listening for "user-disconnected"')
@@ -51,18 +52,18 @@ const handleDisconnect = async function () {
     delete users[this.id];
     debug(users);
 
-    //remove the user from the room
-    const room = getRoomByUserId(this.id);
-    // Don't run rest of the code if the user wasn't part of a room
-    if (!room) {
-        io.emit("users", users);
-        return;
-    }
-    delete room.users[this.id];
-    io.emit("users", users);
-    rooms.forEach(room => {
-        debug(room);
-    });
+    // //remove the user from the room
+    // const room = getRoomByUserId(this.id);
+    // // Don't run rest of the code if the user wasn't part of a room
+    // if (!room) {
+    //     io.emit("users", users);
+    //     return;
+    // }
+    // delete room.users[this.id];
+    // io.emit("users", users);
+    // rooms.forEach(room => {
+    //     debug(room);
+    // });
 };
 
 const handleJoinGameVer2 = async function (username) {
@@ -71,16 +72,22 @@ const handleJoinGameVer2 = async function (username) {
 
     // Check if rooms (if any) are NOT full
     let roomFull = true;
+    let scoreAlreadyExists = true;
     if (rooms.length !== 0) {
         let checkRooms = rooms.forEach(game_room => {
             if (Object.keys(game_room.users).length < 2) {
                 roomFull = false;
             }
+            // Check if rooms already have score in them
+            if (Object.keys(game_room.usersScore).length < 2) {
+                scoreAlreadyExists = false;
+            }
         });
     };
 
-    // Create a room if the rooms-array doesn't contain any OR the rooms are all full
-    if (rooms.length === 0 || roomFull === true) {
+    // Create a room if the rooms-array doesn't contain any, the rooms are all full or there is already users in the usersScore object.
+    //Last check is needed if both users leave without clicking on the virus (and thus not running handleScore again)
+    if ((rooms.length === 0)|| (roomFull === true) || (scoreAlreadyExists === true)) {
         this.join(`game${nextRoomId}`);
         rooms[nextRoomId] = {
             id: `game${nextRoomId}`,
