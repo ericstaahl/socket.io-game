@@ -13,10 +13,6 @@ let nextRoomId = 0;
 
 let io = null; // socket.io server instance
 
-const getRoomByUserId = id => {
-    return rooms.find(chatroom => chatroom.users.hasOwnProperty(id))
-};
-
 const handleUserJoined = async function (username, callback) {
     // add the user to the users object
     debug('Listening for "user-join"')
@@ -52,7 +48,11 @@ const handleDisconnect = async function () {
     debug(users);
 
     //remove the user from the room
-    const room = getRoomByUserId(this.id);
+    // // ------ Attempt to handle user disconnects during game ------
+    // const newRooms = rooms.filter(room => room);
+    // rooms = newRooms;
+    // //  -----  ------
+    const room = rooms.find(room => room.users.hasOwnProperty(this.id));
     // Don't run rest of the code if the user wasn't part of a room
     if (!room) {
         io.emit("users", users);
@@ -206,17 +206,18 @@ const handleScore = function (response) {
             this.leave(roomId);
         }
     }
-    //Handle user leaving during the game
-    if (Object.keys(room.users).length < 2) {
-        io.in(room.id).emit('opponentLeft');
-        const newRooms = rooms.filter(room => room === roomId);
-        rooms = newRooms;
-        console.log("The new rooms array: " + newRooms);
-        // debug(`Length of rooms array: ${rooms.length}`)
-        debug(rooms);
-        // Leave the room
-        this.leave(roomId);
-    }
+    // // ------ Attempt to handle user disconnects during game ------
+    // //Handle user leaving during the game
+    // if (Object.keys(room.users).length < 2) {
+    //     io.in(room.id).emit('opponentLeft');
+    //     const newRooms = rooms.filter(room => room === roomId);
+    //     rooms = newRooms;
+    //     console.log("The new rooms array: " + newRooms);
+    //     // debug(`Length of rooms array: ${rooms.length}`)
+    //     debug(rooms);
+    //     // Leave the room
+    //     this.leave(roomId);
+    // }
 };
 
 // Startade koden för scoreboarden, men behöver få fram reaktionstiden för att komma vidare så att spelarna kan få poäng
