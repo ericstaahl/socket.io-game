@@ -12,7 +12,8 @@ const findGameBtn1 = document.querySelector('#game1');
 // const findGameBtn3 = document.querySelector('#game3');
 const gameStartInfoEl = document.querySelector('#game-start-info');
 const timerEl = document.querySelector('#timer');
-const resultEl= document.querySelector('#result-wrapper');
+const resultEl = document.querySelector('#result-wrapper');
+const gameScoreEl = document.querySelector('#gameScore'); 
 
 let room = null;
 let username = null;
@@ -108,14 +109,6 @@ gridArea.addEventListener('click', e => {
     };
 });
 
-const scoreboard = ({ winnerId, score }) => {
-    if (winnerId === username) {
-        setInnerHTML('#player-score', score);
-    } else {
-        setInnerHTML('#opponent-score', score);
-    }
-}
-
 // TODO reset previous game and find a room
 document.querySelector('#continue').addEventListener('click',e => {  
     resultEl.classList.add('hide');
@@ -190,3 +183,7 @@ socket.on('delay', randomDelay => {
 socket.on('update-scoreboard', scoreboard);
 
 // socket.on('timeWhenClicked', timeClicked);
+
+socket.on('winnerName', winner => {
+    gameScoreEl.innerHTML = `The winner is: ${winner}`;
+})

@@ -201,6 +201,18 @@ const handleScore = function (response) {
             // Tell client to render a new virus
             io.in(room.id).emit('newVirus', blockId);
         } else {
+            let highestScore = 0;
+            Object.values(room.usersScore).forEach(score => {
+                if (score > highestScore) {
+                    highestScore = score;
+                };
+                debug("The highest score: " + highestScore);
+                const winner = Object.keys(room.usersScore).find(key => room.usersScore[key] === highestScore);
+                debug("The winner is: " + winner);
+                const winnerName = users[winner];
+                debug("The name of the winner is: " + winnerName);
+                io.in(room.id).emit('winnerName', winnerName);
+            });
             io.in(room.id).emit('gameOver');
             const newRooms = rooms.filter(room => room === roomId);
             rooms = newRooms;
