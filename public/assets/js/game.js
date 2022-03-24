@@ -155,6 +155,7 @@ socket.on('users', users => {
 });
 
 socket.on('gameFound', (ids) => {
+    findGameBtn1.classList.add('hide');
     console.log("Object sent from server-side :" + ids);
     blockId = ids.blockId;
     room = ids.roomId;
@@ -169,9 +170,11 @@ socket.on('newVirus', blockId => {
     generateVirus(blockId);
 });
 
-// socket.on('gameOver', () => {
-//     console.log('The game is over.')
-// })
+socket.on('gameOver', () => {
+    console.log('The game is over.')
+    numberOfRounds = 0;
+    findGameBtn1.classList.remove('hide');
+})
 
 socket.on('update-scoreboard', scoreboard);
 
