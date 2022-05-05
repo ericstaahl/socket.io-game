@@ -252,7 +252,7 @@ const handleScore = function (response) {
         }
     }
 
-    io.in(room.id).emit('opponentsName', opponentsName)
+    //io.in(room.id).emit('opponentsName', opponentsName)
 
     // ------ Attempt to handle user disconnects during game ------
     //Handle user leaving during the game
