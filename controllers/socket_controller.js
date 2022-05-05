@@ -249,7 +249,6 @@ const handleScore = function (response) {
             const newRooms = rooms.filter(room => room.id !== roomId);
             rooms = newRooms;
             console.log("The new rooms array: " + JSON.stringify(newRooms));
-            // debug(`Length of rooms array: ${rooms.length}`)
             debug(rooms);
             // Leave the room
             this.leave(roomId);

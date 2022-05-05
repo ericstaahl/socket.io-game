@@ -44,8 +44,6 @@ let username = null;
 let blockId;
 let numberOfRounds = 0;
 
-// let timeWhenAppeared; // Använder inte 'timeWhenAppeared'
-
 let createTime;
 let reactionTime;
 let timeClicked;
@@ -73,7 +71,6 @@ function createGrids(grid) {
     console.log(gridArea);
     //for loop, skapa en ny div i spelet
     for (let i = 0; i < 65; i++) {
-        //console.log(width);
         const block = document.createElement('div');
 
         block.classList.add('block');
@@ -126,7 +123,7 @@ gridArea.addEventListener('click', e => {
         timerEl.innerHTML = `Your Reaction Time is: ${reactionTime} seconds`;
         socket.emit('timeWhenClicked; ', timeClicked);
         imageEl.remove();
-        if (numberOfRounds === 10) { // After 10 games: Continue/Exit, Results Screen
+        if (numberOfRounds === 10) { // After 10 games: Continue, Results Screen
             gameEl.classList.add('hide');
             resultEl.classList.remove('hide');
         }
@@ -141,12 +138,6 @@ document.querySelector('#continue').addEventListener('click', e => {
     gameEl.classList.remove('hide');
     gameStartInfoEl.innerText = "Press the button to start looking for a game!";
 });
-
-// // TODO reset previous game
-// document.querySelector('#quit').addEventListener('click',e => { 
-//     resultEl.classList.add('hide');
-//     startEl.classList.remove('hide');
-// });
 
 //------- rooms ----------
 findGameBtn1.addEventListener('click', e => {
@@ -168,7 +159,7 @@ socket.on('users', users => {
     // Create an array of all the values in the user object
     const usersArray = Object.values(users);
     // Display all users on the page
-    // TODO Make sure names are removed from the array (on server side) when disconnected so that they do not rerender on the page
+    // Make sure names are removed from the array (on server side) when disconnected so that they do not rerender on the page
     onlineUsersEl.innerHTML = usersArray.map(username => `<li>${username}</li>`).join("");
 });
 
@@ -186,8 +177,6 @@ socket.on('gameFound', (ids) => {
     gameStartInfoEl.innerText = "A game has been found!";
     createGrids(gridArea);
 });
-
-// socket.on('update-scoreboard', scoreboard)
 
 
 socket.on('newVirus', blockId => {
@@ -217,10 +206,6 @@ socket.on('opponentLeft', () => {
     resultEl.classList.remove('hide');
     winnerIsEl.innerText = `Your opponent left... But you win!`;
 });
-
-// socket.on('update-scoreboard', scoreboard);
-
-// socket.on('timeWhenClicked', timeClicked);
 
 socket.on('winnerName', winner => {
     winnerIsEl.innerText = `The winner is: ${winner}`;
