@@ -158,7 +158,8 @@ socket.on('gameFound', (ids) => {
     createGrids(gridArea);
 });
 
-socket.on('update-scoreboard', scoreboard);
+socket.on('update-scoreboard', scoreboard)
+    
 
 socket.on('newVirus', blockId => {
     generateVirus(blockId);
@@ -194,3 +195,8 @@ socket.on('update-scoreboard', scoreboard);
 socket.on('winnerName', winner => {
     winnerIsEl.innerText = `The winner is: ${winner}`;
 })
+
+// Score board
+const getPlayerScore = document.querySelector('#player-score')
+const getOpponentScore = document.querySelector('#opponent-score')
+
