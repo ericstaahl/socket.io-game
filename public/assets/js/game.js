@@ -96,12 +96,18 @@ function generateVirus(id) {
             randomBlock.appendChild(imageEl);
         };
 
-    createTime = Date.now(); // -----
+    createTime = Date.now(); 
     
     }, delay); // -----
+
+	setInterval(function() {
+		let elapsedTime = Date.now() - createTime;
+		document.getElementById("timer").innerText = (elapsedTime / 1000).toFixed(3);
+	}, 100)
 };
 
 gridArea.addEventListener('click', e => {
+	document.getElementById("timer").innerText = ""
     if (e.target.tagName === 'IMG') {
         numberOfRounds++; // count games up to 10
         console.log('Round: ',numberOfRounds); // check how many rounds
