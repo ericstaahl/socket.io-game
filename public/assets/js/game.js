@@ -1,15 +1,14 @@
 const socket = io();
+
 const startForm = document.querySelector('#start-form');
 const startEl = document.querySelector('#start');
 const gameEl = document.querySelector('#game');
 const gridArea = document.querySelector('#gameArea');
 const onlineUsersEl = document.querySelector('#online-users');
 const nameTakenEl = document.querySelector('#name-taken')
+
 let imageEl;
-//temporary query selectors for joining these rooms/gamerooms
 const findGameBtn1 = document.querySelector('#game1');
-// const findGameBtn2 = document.querySelector('#game2');
-// const findGameBtn3 = document.querySelector('#game3');
 const gameStartInfoEl = document.querySelector('#game-start-info');
 const timerEl = document.querySelector('#timer');
 const resultEl = document.querySelector('#result-wrapper');
@@ -22,13 +21,14 @@ const getOpponentScoreEl = document.querySelectorAll('.opponent-score')
 const timerPlayer1El = document.querySelector('#timerPlayer1')
 const timerPlayer2El = document.querySelector('#timerPlayer2')
 
+// Reset score, names etc.
 const postGameReset = () => {
     getPlayerScoreEl.forEach(item => item.innerText='0')
     getOpponentScoreEl.forEach(item => item.innerText='0')
     timerPlayer1El.innerText = ``
     timerPlayer2El.innerText = ``
     winnerIsEl.innerText = `The winner is...`;
-    player2El.innerText='Player 2'
+    player2El.innerText='Opponents time'
     timerEl.innerHTML = ``;
 }
 
@@ -37,7 +37,7 @@ let username = null;
 let blockId;
 let numberOfRounds = 0;
 
-let timeWhenAppeared; // Använder inte 'timeWhenAppeared'
+// let timeWhenAppeared; // Använder inte 'timeWhenAppeared'
 
 let createTime;
 let reactionTime;
@@ -111,7 +111,6 @@ gridArea.addEventListener('click', e => {
         const timeDifference = timeClicked - createTime;
         console.log(timeDifference);
         reactionTime=(timeClicked-createTime)/1000; 
-        //console.log('timeClicked, reactionTime ',timeClicked, reactionTime);
 
         socket.emit('timeWhenClicked', { timeDifference, room });
 
@@ -126,7 +125,7 @@ gridArea.addEventListener('click', e => {
     };
 });
 
-// TODO reset previous game and find a room
+// reset previous game and go back to the lobby
 document.querySelector('#continue').addEventListener('click',e => {  
     postGameReset()
     resultEl.classList.add('hide');
@@ -134,11 +133,11 @@ document.querySelector('#continue').addEventListener('click',e => {
     gameStartInfoEl.innerText = "Press the button to start looking for a game!";
 });
 
-// TODO reset previous game
-document.querySelector('#quit').addEventListener('click',e => { 
-    resultEl.classList.add('hide');
-    startEl.classList.remove('hide');
-});
+// // TODO reset previous game
+// document.querySelector('#quit').addEventListener('click',e => { 
+//     resultEl.classList.add('hide');
+//     startEl.classList.remove('hide');
+// });
 
 //------- rooms ----------
 findGameBtn1.addEventListener('click', e => {

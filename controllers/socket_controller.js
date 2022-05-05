@@ -39,16 +39,11 @@ const handleUserJoined = async function (username, callback) {
 
 const handleDisconnect = async function () {
     //remove the user from the users object
-    // debug('Listening for "user-disconnected"')
     debug(`${users[this.id]} has disconnected`);
     delete users[this.id];
     debug(users);
 
     //remove the user from the room
-    // // ------ Attempt to handle user disconnects during game ------
-    // const newRooms = rooms.filter(room => room);
-    // rooms = newRooms;
-    // //  -----  ------
     debug('this.id has this value:', this.id)
     debug(rooms)
     // Ignore emtpy items by checking if room is truthy or not
@@ -134,7 +129,7 @@ const handleJoinGameVer2 = async function (username) {
                 rooms.forEach(room => {
                     debug(room);
                 });
-                // break;
+                
             } else {
                 debug("This room/game already has two players.")
                 rooms.forEach(room => {
@@ -163,7 +158,6 @@ const virusPosition = function () {
 };
 
 const handleScore = function (response) {
-    // Reaction object
     // Get values from client-side response
     console.log(response);
     const timeClicked = response.timeDifference;
@@ -179,10 +173,8 @@ const handleScore = function (response) {
         };
     });
 
-    // Save reaction to reactions object
+    // Save reaction to reactions object (gets sent to client later to display both players' times)
     room.bothReactions[this.id] = timeClicked
-    // debug("Reactions object")
-    // debug(room.bothReactions)
 
     let roundIsFinished = false;
     // If the variable is null, assign it the socket id of a player
@@ -221,7 +213,7 @@ const handleScore = function (response) {
     if (roundIsFinished === true) {
         if (room.rounds < 10) {
             roundIsFinished = false;
-            // // Reset the room object's properties
+            // Reset the room object's properties
             room.userWithBestTime = null;
             room.reaction = null
             const blockId = virusPosition();
@@ -263,23 +255,6 @@ const handleScore = function (response) {
             this.leave(roomId);
         }
     }
-
-    //io.in(room.id).emit('opponentsName', opponentsName)
-
-    // ------ Attempt to handle user disconnects during game ------
-    //Handle user leaving during the game
-    //     if (Object.keys(room.users).length < 2) {
-    //         debug(`Length of rooms array before removal of room: ${rooms.length}`)
-    //         io.in(room.id).emit('opponentLeft');
-    //         const newRooms = rooms.filter(room => room.id !== roomId);
-    //         rooms = newRooms;
-    //         console.log("The new rooms array: " + newRooms);
-    //         debug(`Length of rooms array: ${rooms.length}`)
-    //         debug(rooms);
-    //         // Leave the room
-    //         this.leave(roomId);
-    //     }
-
 };
 
 module.exports = function (socket, _io) {
