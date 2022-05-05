@@ -1,6 +1,3 @@
-const { handle } = require('express/lib/application');
-const res = require('express/lib/response');
-
 /**
  * Socket Controller
  */
@@ -238,7 +235,7 @@ const handleScore = function (response) {
 
                 let winnerName = users[winner];
                 if (tie) {
-                    winnerName = Object.values(users);
+                    winnerName = "Both players!"
                 };
 
                 debug("The name of the winner is: " + winnerName);
@@ -254,7 +251,9 @@ const handleScore = function (response) {
             this.leave(roomId);
         }
     }
+
     io.in(room.id).emit('opponentsName', opponentsName)
+
     // ------ Attempt to handle user disconnects during game ------
     //Handle user leaving during the game
     //     if (Object.keys(room.users).length < 2) {
