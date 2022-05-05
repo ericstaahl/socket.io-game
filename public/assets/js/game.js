@@ -20,7 +20,7 @@ let username = null;
 let blockId;
 let numberOfRounds = 0;
 
-let timeWhenAppeared;
+let timeWhenAppeared; // Använder inte 'timeWhenAppeared'
 
 let createTime;
 let reactionTime;
