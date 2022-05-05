@@ -19,6 +19,9 @@ const player2El = document.querySelector(".player2")
 // Score board
 const getPlayerScoreEl = document.querySelectorAll('.player-score')
 const getOpponentScoreEl = document.querySelectorAll('.opponent-score')
+const timerPlayer1El = document.querySelector('#timerPlayer1')
+const timerPlayer2El = document.querySelector('#timerPlayer2')
+
 
 let room = null;
 let username = null;
@@ -204,11 +207,13 @@ socket.on('winnerName', winner => {
     winnerIsEl.innerText = `The winner is: ${winner}`;
 })
 
-socket.on('usersScore', usersScore => {
+socket.on('usersScore', ({usersScore, bothReactions}) => {
     console.log("The users score: ", usersScore)
     getPlayerScoreEl.forEach(item => item.innerText=usersScore[socket.id])
     const opponentsID = Object.keys(usersScore).find(id => id !== socket.id)
     getOpponentScoreEl.forEach(item => item.innerText=usersScore[opponentsID])
+    timerPlayer1El.innerText = `${bothReactions[socket.id]} ms`
+    timerPlayer2El.innerText = `${bothReactions[opponentsID]} ms`
 
 })
 

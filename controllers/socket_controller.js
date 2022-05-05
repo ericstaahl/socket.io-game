@@ -108,6 +108,8 @@ const handleJoinGameVer2 = async function (username) {
             rounds: 0,
             usersScore: {
             },
+            bothReactions: {
+            },
         };
         // Save user in room
         rooms[nextRoomId].users[this.id] = username;
@@ -161,6 +163,7 @@ const virusPosition = function () {
 };
 
 const handleScore = function (response) {
+    // Reaction object
     // Get values from client-side response
     console.log(response);
     const timeClicked = response.timeDifference;
@@ -176,6 +179,11 @@ const handleScore = function (response) {
         };
     });
 
+    // Save reaction to reactions object
+    room.bothReactions[this.id] = timeClicked
+    // debug("Reactions object")
+    // debug(room.bothReactions)
+
     let roundIsFinished = false;
     // If the variable is null, assign it the socket id of a player
     // Will be the first player to respond.
@@ -187,9 +195,10 @@ const handleScore = function (response) {
     debug(`Current user with best time is: ${room.userWithBestTime}`);
     // If the reaction time from the first player has been saved, check how it compares to the last user's time and
     // give score to the user with the best time.
-    
+
     if (room.reaction) {
         if (room.reaction > timeClicked) {
+
             room.reaction = timeClicked;
             room.userWithBestTime = this.id;
             room.usersScore[room.userWithBestTime]++;
@@ -199,7 +208,7 @@ const handleScore = function (response) {
             room.usersScore[room.userWithBestTime]++;
         };
         room.rounds++;
-        io.in(room.id).emit('usersScore', room.usersScore);
+        io.in(room.id).emit('usersScore', {usersScore: room.usersScore, bothReactions: room.bothReactions});
         roundIsFinished = true;
         debug(`Number of rounds: ${room.rounds}`)
 
