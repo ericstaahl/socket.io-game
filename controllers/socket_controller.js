@@ -1,6 +1,3 @@
-const { handle } = require('express/lib/application');
-const res = require('express/lib/response');
-
 /**
  * Socket Controller
  */
@@ -238,7 +235,7 @@ const handleScore = function (response) {
 
                 let winnerName = users[winner];
                 if (tie) {
-                    winnerName = Object.values(users);
+                    winnerName = "Both players!"
                 };
 
                 debug("The name of the winner is: " + winnerName);
