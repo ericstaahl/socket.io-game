@@ -193,7 +193,3 @@ socket.on('winnerName', winner => {
 const getPlayerScore = document.querySelector('#player-score')
 const getOpponentScore = document.querySelector('#opponent-score')
 
-socket.on('users', users => {
-    getPlayerScore.innerHTML = `${username}:`
-    //getOpponentScore.innerHTML=`${}:${}`
-})

@@ -254,6 +254,7 @@ const handleScore = function (response) {
             this.leave(roomId);
         }
     }
+    io.in(room.id).emit('opponentsName', opponentsName)
     // ------ Attempt to handle user disconnects during game ------
     //Handle user leaving during the game
     //     if (Object.keys(room.users).length < 2) {
