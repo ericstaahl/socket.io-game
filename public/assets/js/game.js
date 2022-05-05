@@ -148,6 +148,7 @@ socket.on('users', users => {
 
 socket.on('gameFound', (ids) => {
     findGameBtn1.classList.add('hide');
+    gridArea.classList.remove('hide')
     console.log("Object sent from server-side :" + ids);
     blockId = ids.blockId;
     room = ids.roomId;
@@ -177,6 +178,7 @@ socket.on('delay', randomDelay => {
 socket.on('opponentLeft', () => {
     console.log('You automatically won because your opponent disconnected during your game.')
     numberOfRounds = 0;
+    gridArea.classList.add('hide')
     findGameBtn1.classList.remove('hide');
 });
 
