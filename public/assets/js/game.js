@@ -22,6 +22,15 @@ const getOpponentScoreEl = document.querySelectorAll('.opponent-score')
 const timerPlayer1El = document.querySelector('#timerPlayer1')
 const timerPlayer2El = document.querySelector('#timerPlayer2')
 
+const postGameReset = () => {
+    getPlayerScoreEl.forEach(item => item.innerText='0')
+    getOpponentScoreEl.forEach(item => item.innerText='0')
+    timerPlayer1El.innerText = ``
+    timerPlayer2El.innerText = ``
+    winnerIsEl.innerText = `The winner is...`;
+    player2El.innerText='Player 2'
+    timerEl.innerHTML = ``;
+}
 
 let room = null;
 let username = null;
@@ -119,6 +128,7 @@ gridArea.addEventListener('click', e => {
 
 // TODO reset previous game and find a room
 document.querySelector('#continue').addEventListener('click',e => {  
+    postGameReset()
     resultEl.classList.add('hide');
     gameEl.classList.remove('hide');
     gameStartInfoEl.innerText = "Press the button to start looking for a game!";
@@ -169,7 +179,7 @@ socket.on('gameFound', (ids) => {
     createGrids(gridArea);
 });
 
-socket.on('update-scoreboard', scoreboard)
+// socket.on('update-scoreboard', scoreboard)
     
 
 socket.on('newVirus', blockId => {
@@ -199,7 +209,7 @@ socket.on('opponentLeft', () => {
     winnerIsEl.innerText = `Your opponent left... But you win!`;
 });
 
-socket.on('update-scoreboard', scoreboard);
+// socket.on('update-scoreboard', scoreboard);
 
 // socket.on('timeWhenClicked', timeClicked);
 
