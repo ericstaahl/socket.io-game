@@ -148,7 +148,6 @@ socket.on('users', users => {
 
 socket.on('gameFound', (ids) => {
     findGameBtn1.classList.add('hide');
-    gridArea.classList.remove('hide')
     console.log("Object sent from server-side :" + ids);
     blockId = ids.blockId;
     room = ids.roomId;
@@ -176,13 +175,11 @@ socket.on('delay', randomDelay => {
     delay = randomDelay;
 });
 
-socket.on('opponentLeft', () => {
-    console.log('You automatically won because your opponent disconnected during your game.')
-    numberOfRounds = 0;
-    // Remove virus from the board otherwise it will show up in the next game aswell 
-    gridArea.innerHTML = ""
-    findGameBtn1.classList.remove('hide');
-});
+// socket.on('opponentLeft', () => {
+//     console.log('You automatically won because your opponent disconnected during your game.')
+//     numberOfRounds = 0;
+//     findGameBtn1.classList.remove('hide');
+// });
 
 socket.on('update-scoreboard', scoreboard);
 
@@ -192,7 +189,7 @@ socket.on('winnerName', winner => {
     gameScoreEl.innerHTML = `The winner is: ${winner}`;
 })
 
-// Score boad
+// Score board
 const getPlayerScore = document.querySelector('#player-score')
 const getOpponentScore = document.querySelector('#opponent-score')
 
