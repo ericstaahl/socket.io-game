@@ -13,7 +13,8 @@ const findGameBtn1 = document.querySelector('#game1');
 const gameStartInfoEl = document.querySelector('#game-start-info');
 const timerEl = document.querySelector('#timer');
 const resultEl = document.querySelector('#result-wrapper');
-const gameScoreEl = document.querySelector('#gameScore'); 
+const gameScoreEl = document.querySelector('#gameScore');
+const winnerIsEl = document.querySelector('#winnerIs')
 
 let room = null;
 let username = null;
@@ -181,6 +182,9 @@ socket.on('opponentLeft', () => {
     // Remove virus from the board otherwise it will show up in the next game aswell 
     gridArea.innerHTML = ""
     findGameBtn1.classList.remove('hide');
+    gameEl.classList.add('hide');
+    resultEl.classList.remove('hide');
+    winnerIsEl.innerText = `Your opponent left... But you win!`;
 });
 
 socket.on('update-scoreboard', scoreboard);
@@ -188,5 +192,5 @@ socket.on('update-scoreboard', scoreboard);
 // socket.on('timeWhenClicked', timeClicked);
 
 socket.on('winnerName', winner => {
-    gameScoreEl.innerHTML = `The winner is: ${winner}`;
+    winnerIsEl.innerText = `The winner is: ${winner}`;
 })
