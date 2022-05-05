@@ -21,14 +21,21 @@ const getOpponentScoreEl = document.querySelectorAll('.opponent-score')
 const timerPlayer1El = document.querySelector('#timerPlayer1')
 const timerPlayer2El = document.querySelector('#timerPlayer2')
 
+const timerFunction = () => {
+    let elapsedTime = Date.now() - createTime;
+    document.getElementById("timer").innerText = (elapsedTime / 1000).toFixed(3);
+}
+
+let intervalTimer;
+
 // Reset score, names etc.
 const postGameReset = () => {
-    getPlayerScoreEl.forEach(item => item.innerText='0')
-    getOpponentScoreEl.forEach(item => item.innerText='0')
+    getPlayerScoreEl.forEach(item => item.innerText = '0')
+    getOpponentScoreEl.forEach(item => item.innerText = '0')
     timerPlayer1El.innerText = ``
     timerPlayer2El.innerText = ``
     winnerIsEl.innerText = `The winner is...`;
-    player2El.innerText='Opponents time'
+    player2El.innerText = 'Opponents time'
     timerEl.innerHTML = ``;
 }
 
@@ -82,7 +89,7 @@ function createGrids(grid) {
 
 function generateVirus(id) {
     blockId = id;
-    setTimeout(function() { // -----
+    setTimeout(function () { // -----
 
         imageEl = document.createElement('img');
         imageEl.setAttribute('src', '/assets/icons/virus.png');
@@ -96,27 +103,23 @@ function generateVirus(id) {
             randomBlock.appendChild(imageEl);
         };
 
-    createTime = Date.now(); 
-    
+        createTime = Date.now();
+        
+        intervalTimer = setInterval(timerFunction, 100)
     }, delay); // -----
-
-	setInterval(function() {
-		let elapsedTime = Date.now() - createTime;
-		document.getElementById("timer").innerText = (elapsedTime / 1000).toFixed(3);
-	}, 100)
 };
 
 gridArea.addEventListener('click', e => {
-	document.getElementById("timer").innerText = ""
     if (e.target.tagName === 'IMG') {
+        clearInterval(intervalTimer)
         numberOfRounds++; // count games up to 10
-        console.log('Round: ',numberOfRounds); // check how many rounds
+        console.log('Round: ', numberOfRounds); // check how many rounds
         console.log("You clicked on the virus!")
         imageEl.remove();
         const timeClicked = Date.now();
         const timeDifference = timeClicked - createTime;
         console.log(timeDifference);
-        reactionTime=(timeClicked-createTime)/1000; 
+        reactionTime = (timeClicked - createTime) / 1000;
 
         socket.emit('timeWhenClicked', { timeDifference, room });
 
@@ -125,14 +128,14 @@ gridArea.addEventListener('click', e => {
         imageEl.remove();
         if (numberOfRounds === 10) { // After 10 games: Continue/Exit, Results Screen
             gameEl.classList.add('hide');
-            resultEl.classList.remove('hide');           
+            resultEl.classList.remove('hide');
         }
 
     };
 });
 
 // reset previous game and go back to the lobby
-document.querySelector('#continue').addEventListener('click',e => {  
+document.querySelector('#continue').addEventListener('click', e => {
     postGameReset()
     resultEl.classList.add('hide');
     gameEl.classList.remove('hide');
@@ -178,14 +181,14 @@ socket.on('gameFound', (ids) => {
     console.log("Names of players: ", ids.namesOfPlayers)
     const opponentsName = ids.namesOfPlayers.find(name => name !== username)
     console.log("Name of opponent", opponentsName)
-    player2El.innerText=opponentsName
+    player2El.innerText = opponentsName
     console.log("Room from the sent array: " + room);
     gameStartInfoEl.innerText = "A game has been found!";
     createGrids(gridArea);
 });
 
 // socket.on('update-scoreboard', scoreboard)
-    
+
 
 socket.on('newVirus', blockId => {
     generateVirus(blockId);
@@ -204,6 +207,7 @@ socket.on('delay', randomDelay => {
 });
 
 socket.on('opponentLeft', () => {
+    clearInterval(intervalTimer)
     console.log('You automatically won because your opponent disconnected during your game.')
     numberOfRounds = 0;
     // Remove virus from the board otherwise it will show up in the next game aswell 
@@ -222,11 +226,11 @@ socket.on('winnerName', winner => {
     winnerIsEl.innerText = `The winner is: ${winner}`;
 })
 
-socket.on('usersScore', ({usersScore, bothReactions}) => {
+socket.on('usersScore', ({ usersScore, bothReactions }) => {
     console.log("The users score: ", usersScore)
-    getPlayerScoreEl.forEach(item => item.innerText=usersScore[socket.id])
+    getPlayerScoreEl.forEach(item => item.innerText = usersScore[socket.id])
     const opponentsID = Object.keys(usersScore).find(id => id !== socket.id)
-    getOpponentScoreEl.forEach(item => item.innerText=usersScore[opponentsID])
+    getOpponentScoreEl.forEach(item => item.innerText = usersScore[opponentsID])
     timerPlayer1El.innerText = `${bothReactions[socket.id]} ms`
     timerPlayer2El.innerText = `${bothReactions[opponentsID]} ms`
 
