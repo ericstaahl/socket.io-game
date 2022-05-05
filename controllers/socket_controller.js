@@ -52,7 +52,14 @@ const handleDisconnect = async function () {
     // const newRooms = rooms.filter(room => room);
     // rooms = newRooms;
     // //  -----  ------
-    const room = rooms.find(room => room.users.hasOwnProperty(this.id));
+    debug('THIS ID', this.id)
+    debug(rooms)
+    // Ignore emtpy items by checking if room is truthy or not
+    const room = rooms.find(room => {
+        if (room) {
+            return room.users.hasOwnProperty(this.id)
+        }
+    });
     // Don't run rest of the code if the user wasn't part of a room
     if (!room) {
         io.emit("users", users);
@@ -61,8 +68,20 @@ const handleDisconnect = async function () {
     delete room.users[this.id];
     io.emit("users", users);
     rooms.forEach(room => {
-        debug(room);
+        debug("Debugging room after user removal", room);
     });
+
+    //Remove room after disconnect
+
+    debug(`Length of rooms array before removal of room: ${rooms.length}`)
+    io.in(room.id).emit('opponentLeft');
+    const newRooms = rooms.filter(_room => _room.id !== room.id);
+    rooms = newRooms;
+    console.log("The new rooms array: " + newRooms);
+    debug(`Length of rooms array: ${rooms.length}`)
+    debug(rooms);
+    // Leave the room
+    this.leave(room.id);
 };
 
 const handleJoinGameVer2 = async function (username) {
@@ -124,7 +143,8 @@ const handleJoinGameVer2 = async function (username) {
                 });
             };
         });
-        debug("All rooms: " + rooms)
+        debug("All rooms: ")
+        debug(rooms)
     };
 
     if (Object.keys(_game_room.users).length === 2) {
@@ -161,7 +181,8 @@ const handleScore = function (response) {
     let roundIsFinished = false;
     // If the variable is null, assign it the socket id of a player
     // Will be the first player to respond.
-    debug("room before crash: " + room);
+    debug("rooms before crash: ")
+    debug(rooms);
     if (!room.userWithBestTime) {
         room.userWithBestTime = this.id;
     };
@@ -233,18 +254,20 @@ const handleScore = function (response) {
             this.leave(roomId);
         }
     }
-    // // ------ Attempt to handle user disconnects during game ------
-    // //Handle user leaving during the game
-    // if (Object.keys(room.users).length < 2) {
-    //     io.in(room.id).emit('opponentLeft');
-    //     const newRooms = rooms.filter(room => room === roomId);
-    //     rooms = newRooms;
-    //     console.log("The new rooms array: " + newRooms);
-    //     // debug(`Length of rooms array: ${rooms.length}`)
-    //     debug(rooms);
-    //     // Leave the room
-    //     this.leave(roomId);
-    // }
+    // ------ Attempt to handle user disconnects during game ------
+    //Handle user leaving during the game
+    //     if (Object.keys(room.users).length < 2) {
+    //         debug(`Length of rooms array before removal of room: ${rooms.length}`)
+    //         io.in(room.id).emit('opponentLeft');
+    //         const newRooms = rooms.filter(room => room.id !== roomId);
+    //         rooms = newRooms;
+    //         console.log("The new rooms array: " + newRooms);
+    //         debug(`Length of rooms array: ${rooms.length}`)
+    //         debug(rooms);
+    //         // Leave the room
+    //         this.leave(roomId);
+    //     }
+
 };
 
 module.exports = function (socket, _io) {
