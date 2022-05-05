@@ -198,6 +198,7 @@ const handleScore = function (response) {
             room.usersScore[room.userWithBestTime]++;
         };
         room.rounds++;
+        io.in(room.id).emit('usersScore', room.usersScore);
         roundIsFinished = true;
         debug(`Number of rounds: ${room.rounds}`)
 

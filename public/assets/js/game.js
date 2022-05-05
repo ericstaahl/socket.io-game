@@ -16,6 +16,9 @@ const resultEl = document.querySelector('#result-wrapper');
 const gameScoreEl = document.querySelector('#gameScore');
 const winnerIsEl = document.querySelector('#winnerIs')
 const player2El = document.querySelector(".player2")
+// Score board
+const getPlayerScoreEl = document.querySelectorAll('.player-score')
+const getOpponentScoreEl = document.querySelectorAll('.opponent-score')
 
 let room = null;
 let username = null;
@@ -201,7 +204,12 @@ socket.on('winnerName', winner => {
     winnerIsEl.innerText = `The winner is: ${winner}`;
 })
 
-// Score board
-const getPlayerScore = document.querySelector('#player-score')
-const getOpponentScore = document.querySelector('#opponent-score')
+socket.on('usersScore', usersScore => {
+    console.log("The users score: ", usersScore)
+    getPlayerScoreEl.forEach(item => item.innerText=usersScore[socket.id])
+    const opponentsID = Object.keys(usersScore).find(id => id !== socket.id)
+    getOpponentScoreEl.forEach(item => item.innerText=usersScore[opponentsID])
+
+})
+
 
