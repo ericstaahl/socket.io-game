@@ -49,7 +49,7 @@ const handleDisconnect = async function () {
     // const newRooms = rooms.filter(room => room);
     // rooms = newRooms;
     // //  -----  ------
-    debug('THIS ID', this.id)
+    debug('this.id has this value:', this.id)
     debug(rooms)
     // Ignore emtpy items by checking if room is truthy or not
     const room = rooms.find(room => {
@@ -187,6 +187,7 @@ const handleScore = function (response) {
     debug(`Current user with best time is: ${room.userWithBestTime}`);
     // If the reaction time from the first player has been saved, check how it compares to the last user's time and
     // give score to the user with the best time.
+    
     if (room.reaction) {
         if (room.reaction > timeClicked) {
             room.reaction = timeClicked;
