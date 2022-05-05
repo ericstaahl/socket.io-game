@@ -178,6 +178,8 @@ socket.on('delay', randomDelay => {
 socket.on('opponentLeft', () => {
     console.log('You automatically won because your opponent disconnected during your game.')
     numberOfRounds = 0;
+    // Remove virus from the board otherwise it will show up in the next game aswell 
+    imageEl.remove();
     gridArea.classList.add('hide')
     findGameBtn1.classList.remove('hide');
 });

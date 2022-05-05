@@ -54,6 +54,7 @@ const handleDisconnect = async function () {
     // //  -----  ------
     debug('THIS ID', this.id)
     debug(rooms)
+    // Ignore emtpy items by checking if room is truthy or not
     const room = rooms.find(room => {
         if (room) {
             return room.users.hasOwnProperty(this.id)
