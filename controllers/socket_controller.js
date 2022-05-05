@@ -150,7 +150,8 @@ const handleJoinGameVer2 = async function (username) {
         // Client listens to this emit, some function runs and the game starts
         debug("The id of the room created: " + nextRoomId)
         const roomId = _game_room.id;
-        io.in(_game_room.id).emit('gameFound', { blockId, roomId });
+        const namesOfPlayers = Object.values(_game_room.users)
+        io.in(_game_room.id).emit('gameFound', { blockId, roomId, namesOfPlayers });
     };
 };
 

@@ -15,6 +15,7 @@ const timerEl = document.querySelector('#timer');
 const resultEl = document.querySelector('#result-wrapper');
 const gameScoreEl = document.querySelector('#gameScore');
 const winnerIsEl = document.querySelector('#winnerIs')
+const player2El = document.querySelector(".player2")
 
 let room = null;
 let username = null;
@@ -153,6 +154,10 @@ socket.on('gameFound', (ids) => {
     console.log("Object sent from server-side :" + ids);
     blockId = ids.blockId;
     room = ids.roomId;
+    console.log("Names of players: ", ids.namesOfPlayers)
+    const opponentsName = ids.namesOfPlayers.find(name => name !== username)
+    console.log("Name of opponent", opponentsName)
+    player2El.innerText=opponentsName
     console.log("Room from the sent array: " + room);
     gameStartInfoEl.innerText = "A game has been found!";
     createGrids(gridArea);
