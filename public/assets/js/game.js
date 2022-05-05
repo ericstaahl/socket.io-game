@@ -174,11 +174,11 @@ socket.on('delay', randomDelay => {
     delay = randomDelay;
 });
 
-// socket.on('opponentLeft', () => {
-//     console.log('You automatically won because your opponent disconnected during your game.')
-//     numberOfRounds = 0;
-//     findGameBtn1.classList.remove('hide');
-// });
+socket.on('opponentLeft', () => {
+    console.log('You automatically won because your opponent disconnected during your game.')
+    numberOfRounds = 0;
+    findGameBtn1.classList.remove('hide');
+});
 
 socket.on('update-scoreboard', scoreboard);
 

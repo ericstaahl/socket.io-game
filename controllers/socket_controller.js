@@ -47,22 +47,22 @@ const handleDisconnect = async function () {
     delete users[this.id];
     debug(users);
 
-    //remove the user from the room
-    // // ------ Attempt to handle user disconnects during game ------
-    // const newRooms = rooms.filter(room => room);
-    // rooms = newRooms;
-    // //  -----  ------
-    const room = rooms.find(room => room.users.hasOwnProperty(this.id));
-    // Don't run rest of the code if the user wasn't part of a room
-    if (!room) {
-        io.emit("users", users);
-        return;
-    }
-    delete room.users[this.id];
-    io.emit("users", users);
-    rooms.forEach(room => {
-        debug(room);
-    });
+    // //remove the user from the room
+    // // // ------ Attempt to handle user disconnects during game ------
+    // // const newRooms = rooms.filter(room => room);
+    // // rooms = newRooms;
+    // // //  -----  ------
+    // const room = rooms.find(room => room.users.hasOwnProperty(this.id));
+    // // Don't run rest of the code if the user wasn't part of a room
+    // if (!room) {
+    //     io.emit("users", users);
+    //     return;
+    // }
+    // delete room.users[this.id];
+    // io.emit("users", users);
+    // rooms.forEach(room => {
+    //     debug(room);
+    // });
 };
 
 const handleJoinGameVer2 = async function (username) {
@@ -233,18 +233,19 @@ const handleScore = function (response) {
             this.leave(roomId);
         }
     }
-    // // ------ Attempt to handle user disconnects during game ------
-    // //Handle user leaving during the game
-    // if (Object.keys(room.users).length < 2) {
-    //     io.in(room.id).emit('opponentLeft');
-    //     const newRooms = rooms.filter(room => room === roomId);
-    //     rooms = newRooms;
-    //     console.log("The new rooms array: " + newRooms);
-    //     // debug(`Length of rooms array: ${rooms.length}`)
-    //     debug(rooms);
-    //     // Leave the room
-    //     this.leave(roomId);
-    // }
+    // ------ Attempt to handle user disconnects during game ------
+    //Handle user leaving during the game
+    if (Object.keys(room.users).length < 2) {
+        debug(`Length of rooms array before removal of room: ${rooms.length}`)
+        io.in(room.id).emit('opponentLeft');
+        const newRooms = rooms.filter(room => room.id !== roomId);
+        rooms = newRooms;
+        console.log("The new rooms array: " + newRooms);
+        debug(`Length of rooms array: ${rooms.length}`)
+        debug(rooms);
+        // Leave the room
+        this.leave(roomId);
+    }
 };
 
 module.exports = function (socket, _io) {
